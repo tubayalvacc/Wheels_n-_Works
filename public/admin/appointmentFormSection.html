@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wheels n' works - Appointment Confirmation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #ffffff;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 30px;
+      border: 1px solid #ffffff;
+      border-radius: 10px;
+      background-color: rgba(0, 0, 0, 0.87);
+      box-shadow: 0 0 20px 5px rgba(154, 205, 50, 0.7);
+    }
+    h1, h2 {
+      color: rgba(255, 255, 255, 0.87);
+      margin-bottom: 20px;
+    }
+    .navbar .main-logo {
+      font-size: 36px;
+      font-weight: bold;
+      display: block;
+      margin-bottom: 20px;
+      text-decoration: none;
+    }
+    .navbar .wheel {
+      color: white;
+    }
+    .navbar .highlight {
+      color: #9acd32;
+    }
+    .navbar .works {
+      color: #9acd32;
+    }
+    .appointment-details {
+      margin-bottom: 20px;
+    }
+    .appointment-details p {
+      margin: 10px 0;
+    }
+    .label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    .value {
+      display: inline-block;
+      padding: 5px 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+  </style>
+</head>
+<body>
+<div class="container">
+  <nav class="navbar">
+            <span class="main-logo">
+                <span class="wheel">Wheels</span>
+                <span class="highlight">n'</span>
+                <span class="works">works</span>
+            </span>
+  </nav>
+  <h1>Appointment Confirmation</h1>
+    <div class="appointment-details">
+        <h2>Your appointment has been confirmed:</h2>
+        <p><span class="label">Customer Name:</span> <span class="value">{{customerName}}</span></p>
+        <p><span class="label">Customer ID:</span> <span class="value">{{customerID}}</span></p>
+        <p><span class="label">Date:</span> <span class="value">{{date}}</span></p>
+        <p><span class="label">Time:</span> <span class="value">{{time}}</span></p>
+        <p><span class="label">Service Code:</span> <span class="value">{{serviceCode}}</span></p>
+        <p><span class="label">Service Details:</span> <span class="value">{{serviceDetails}}</span></p>
+        <p><span class="label">Car Plate Number:</span> <span class="value">{{carPlateNumber}}</span></p>
+    </div>
+
+    <p>Thank you for choosing Wheels n' works. We look forward to serving you!</p>
+  <p>If you need to make any changes to your appointment, please contact us
+      at <a href="{{ support@wheelsnworks.orgL}}" style="color: #adcd0e;"> or reply to this email. </a></p>
+</div>
+</body>
+</html>

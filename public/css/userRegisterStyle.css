@@ -1,0 +1,301 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body, html {
+    height: 100%;
+    background: rgba(255, 255, 255, 0.47);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.title-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.title {
+    font-size: 4rem; /* Increased size for emphasis */
+    font-weight: 600;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.title-white {
+    color: white;
+}
+
+.title-green {
+    color: yellowgreen;
+}
+
+.content-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1000px;
+    padding: 0 20px;
+}
+
+.signup-container, .login-container {
+    background: rgba(0, 0, 0, 0.55);
+    padding: 30px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.signup-container:hover, .login-container:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8);
+}
+
+.signup-container h2, .login-container h2 {
+    color: yellowgreen;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5rem; /* Increased size for emphasis */
+    font-weight: 600;
+}
+
+.signup-container input[type="text"],
+.signup-container input[type="email"],
+.signup-container input[type="password"] {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.signup-container input:focus {
+    border-color: yellowgreen;
+    box-shadow: 0 0 8px yellowgreen;
+}
+
+.signup-container button[type="submit"] {
+    background: linear-gradient(135deg, #396006, #6eb507); /* Green gradient */
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 15px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.signup-container button[type="submit"]:hover {
+    background: linear-gradient(135deg, #6eb507, #396006); /* Inverse gradient on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+.signup-container button[type="submit"]::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: rgba(255, 255, 255, 0.2); /* Light overlay effect */
+    transition: transform 0.5s;
+    transform: translate(-50%, -50%) scale(0); /* Initial state: hidden */
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.signup-container button[type="submit"]:hover::after {
+    transform: translate(-50%, -50%) scale(1); /* Show overlay on hover */
+}
+
+
+.or {
+    text-align: center;
+    color: yellowgreen;
+    margin: 20px 0;
+    font-size: 1.2rem;
+}
+
+.social-login {
+    display: flex;
+    justify-content: space-between;
+}
+
+.social-login .social {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-right: 10px;
+}
+
+.social-login .social:last-child {
+    margin-right: 0;
+}
+
+.social-login .social img {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.social-login .social:hover {
+    background-color: rgb(176, 193, 152);
+    transform: scale(1.05);
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+.login-container h5 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.login-container a {
+    color: yellowgreen;
+    text-decoration: none;
+}
+
+.login-container p {
+    margin-bottom: 30px;
+}
+
+.login-container .ghost {
+    background: transparent;
+    border: 2px solid yellowgreen;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    color: yellowgreen;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    width: 100%;
+    text-align: center;
+}
+
+.login-container .ghost:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.note {
+    display: none;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    margin-top: 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.note h3 {
+    color: yellowgreen;
+}
+
+.note .valid {
+    color: green;
+}
+
+.note .invalid {
+    color: red;
+}
+
+.overlay-container {
+    background-color: rgba(0, 0, 0, 0.37);
+    background-image: url('image5.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 0;
+}
+
+.overlay-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.66);
+}
+
+@media (max-width: 768px) {
+    .content-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .signup-container, .login-container {
+        margin: 15px 0;
+    }
+}
+/* Success message styling */
+.success-message {
+    position: fixed; /* Fixed position to overlay on top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none; /* Initially hidden */
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    z-index: 9999; /* Ensures the message is on top */
+    padding: 20px;
+}
+
+.success-message h1 {
+    margin: 0;
+    font-size: 24px; /* Adjust this value for text size */
+}
+
+/* Ensures .container is not affected */
+.container {
+    position: relative;
+}

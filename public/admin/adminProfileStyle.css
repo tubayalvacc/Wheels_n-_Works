@@ -1,0 +1,756 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+.wheel {
+    color: white;
+}
+
+body, html {
+    height: 100%;
+    background: rgba(255, 255, 255, 0.89);
+}
+
+.overlay {
+    background-image: url('image3.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.overlay::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.66);
+    z-index: 1;
+}
+
+.profile-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1100px;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgb(110, 181, 7);
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.navbar .main-logo {
+    font-size: 3.5rem;
+    color: #80ae09;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+h1 {
+    font-size: 1.8rem;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.profile-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start; /* Changed from space-between */
+    position: relative;
+}
+
+.sidebar {
+    background-color: rgba(23, 21, 21, 0.7);
+    padding: 15px;
+    width: 220px;
+    min-width: 220px; /* Ensure it doesn't shrink */
+    height: 100%; /* Full height */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow-y: auto; /* Add scrollbar if content overflows */
+}
+
+.sidebar h2 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    font-size: 1.1rem;
+    border-radius: 5px;
+}
+
+.sidebar ul li.active, .sidebar ul li:hover {
+    background-color: #8acd2b;
+    color: rgba(0, 0, 0, 0.79);
+    transform: translateX(5px);
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.84);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-left: 20px;
+    box-shadow: 0 0 15px rgb(138, 205, 43);
+    position: relative;
+    padding-bottom: 60px; /* Add space for the fixed buttons */
+}
+
+.profile-info, .shop-details, .reviews-ratings, .appointment-history, .social-map {
+    display: none;
+    margin-bottom: 20px;
+    position: relative;
+    min-height: 200px; /* Ensure there's enough space for content and button */
+}
+
+.profile-info .profile-picture img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 3px solid yellowgreen;
+}
+
+.profile-info .profile-details {
+    margin-top: 10px;
+}
+
+.profile-info h2 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+.profile-info p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.profile-info strong {
+    margin-right: 15px;
+    font-weight: 600;
+}
+
+.profile-info span {
+    font-size: 16px;
+    color: #555;
+}
+
+.shop-details h2, .reviews-ratings h2, .appointment-history h2, .social-map h2 {
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.save-button, .edit-button {
+    background-color: #9ACD32; /* Yellow-green color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.edit-button {
+    display: inline-block;
+}
+
+.save-button {
+    display: none;
+}
+
+.save-button:hover, .edit-button:hover {
+    background-color: #8FBC8F;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.appointments-container {
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.appointment-card {
+    background-color: rgba(249, 249, 249, 0.82);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.edit-button, .delete-button {
+    padding: 5px 10px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-button {
+    background-color: #6eb507;
+    color: white;
+}
+
+.delete-button {
+    background-color: #f44336;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .profile-content {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+        min-width: unset; /* Allow full width on smaller screens */
+        height: auto; /* Auto height on smaller screens */
+    }
+
+    .content {
+        margin-left: 0;
+    }
+
+    .appointment-card {
+        font-size: 14px;
+    }
+
+    .edit-button, .delete-button {
+        padding: 3px 8px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-container {
+        padding: 15px;
+    }
+
+    .content {
+        padding: 15px;
+    }
+
+    .appointment-card {
+        font-size: 12px;
+    }
+
+    .edit-button, .delete-button {
+        padding: 2px 6px;
+        font-size: 10px;
+    }
+
+
+}
+
+
+#owner-id,
+#shop-id,
+#name-display,
+#contact-info-display,
+#username-display,
+#email-display,
+#password-display {
+    font-size: 18px;
+    color: #2e2c2c;
+    line-height: 1.6;
+    margin-right: 15px;
+    font-family: "American Typewriter";
+}
+
+#shop-id,
+#shop-name-display,
+#shop-location-display,
+#shop-contact-display,
+#shop-email-display {
+    font-size: 18px;
+    color: #2e2c2c;
+    line-height: 1.6;
+    margin-right: 15px;
+    font-family: "American Typewriter";
+}
+/* Appointments Section */
+.appointments-section {
+    padding: 20px;
+    background-color: rgba(232, 239, 205, 0.36);
+    border-radius: 10px;
+    max-width: 800px;
+    margin: auto;
+    overflow: hidden; /* Ensure section content is contained */
+    box-shadow: 0 0 10px 5px rgba(138, 205, 43, 0.53); /* Glowing border effect */
+}
+
+.appointments-section h2 {
+    text-align: center;
+    color: #171515;
+    margin-bottom: 20px;
+
+}
+
+/* Appointments List */
+.appointments-list {
+    max-height: 500px; /* Adjust this value based on your design needs */
+    overflow-y: auto; /* Add vertical scrollbar if needed */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.appointment-item {
+
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgb(23, 21, 21);
+    position: relative;
+    color: #171515;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 0 10px 5px rgba(138, 205, 43, 0.45); /* Glowing border effect */
+
+}
+
+.appointment-item:hover {
+    transform: translateY(-5px);
+
+}
+
+.appointment-item p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.appointment-item button {
+    background: rgba(138, 205, 43, 0.64);
+    color: #171515;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+    margin-right: 5px;
+}
+
+.appointment-item button:hover {
+    background: #6eb507;
+}
+
+.appointment-item .edit-btn {
+    background: #ffa500;
+}
+
+.appointment-item .edit-btn:hover {
+    background: #e69500;
+}
+
+.appointment-item .delete-btn {
+    background: rgba(244, 67, 54, 0.82);
+}
+
+.appointment-item .delete-btn:hover {
+    background: #e31a1a;
+}
+
+
+
+
+/* Scrollbar Styles */
+.appointments-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.appointments-list::-webkit-scrollbar-track {
+    background: #e8efcd;
+    border-radius: 10px;
+}
+
+.appointments-list::-webkit-scrollbar-thumb {
+    background: rgba(138, 205, 43, 0.75);
+    border-radius: 10px;
+}
+
+.appointments-list::-webkit-scrollbar-thumb:hover {
+    background: #8acd2b;
+}
+
+/*---------------------------------*/
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+
+
+
+
+/*@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+.wheel{
+    color: white;
+}
+
+body, html {
+    height: 100%;
+    background: rgba(255, 255, 255, 0.47);
+}
+
+.overlay {
+    background-image: url('image3.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.66);
+    z-index: 1;
+}
+
+.profile-container {
+    position: relative;
+    z-index: 2;
+    width: 95%;
+    max-width: 1100px;
+    background-color: rgba(0, 0, 0, 0.62);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    min-height: 10in;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(154, 205, 50, 0.3);
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.navbar .main-logo {
+    font-size: 3.5rem;
+    color: #80ae09;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+h1 {
+    font-size: 1.8rem;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.profile-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+}
+
+.sidebar {
+    background-color: rgba(23, 21, 21, 0.7);
+    padding: 15px;
+    width: 220px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+}
+
+.sidebar h2 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    font-size: 1.1rem;
+    border-radius: 5px;
+}
+
+.sidebar ul li.active, .sidebar ul li:hover {
+    background-color: yellowgreen;
+    color: rgba(0, 0, 0, 0.79);
+    transform: translateX(5px);
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.73);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-left: 20px;
+    box-shadow: 0 0 15px rgba(154, 205, 50, 0.2);
+    position: relative;
+    padding-bottom: 60px; /* Space for the save button
+}
+
+.profile-info, .shop-details, .reviews-ratings, .appointment-history, .social-map {
+    display: none;
+    margin-bottom: 20px;
+}
+
+.profile-info .profile-picture img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 3px solid yellowgreen;
+}
+
+.profile-info .profile-details {
+    margin-top: 10px;
+}
+
+.profile-info h2 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+.profile-info p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+.profile-info strong {
+    margin-right: 15px;
+    font-weight: 600;
+}
+
+.profile-info span {
+    font-size: 16px;
+    color: #555;
+}
+
+.shop-details h2, .reviews-ratings h2, .appointment-history h2, .social-map h2 {
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.save-button, .edit-button {
+    background-color: #9ACD32;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+    margin-left: 10px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+.edit-button {
+    display: inline-block; /* Visible by default
+}
+
+.save-button {
+    display: none; /* Hidden by default
+}
+
+.save-button:hover, .edit-button:hover {
+    background-color: #8FBC8F;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+    .profile-content {
+        width: 98%;
+        padding: 15px;
+    }
+
+    .profile-content{
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .content {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    h1{
+        font-size: 1.5rem;
+    }
+    .sidebar h2, .content h2{
+        font-size: 1.3rem;
+    }
+
+    .save-button {
+        position: static;
+        text-align: right;
+        margin-top: 20px;
+    }
+}
+
+
+/* Section Heading
+#appointment-history h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    font-family: "American Typewriter", serif;
+}
+
+/* Appointment Form Styling
+#appointment-form {
+    margin-bottom: 20px;
+}
+
+/* General button styles
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+
+
+/* Button container styling
+.button-container {
+    margin-top: 20px;
+}
+
+.button-container button {
+    margin-right: 10px;
+}
+.appointments-container {
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.appointment-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.appointment-card h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.appointment-card p {
+    margin: 5px 0;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.edit-button, .delete-button {
+    padding: 5px 10px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-button {
+    background-color: #6eb507;
+    color: white;
+}
+
+.delete-button {
+    background-color: #f44336;
+    color: white;
+}
+
+*/

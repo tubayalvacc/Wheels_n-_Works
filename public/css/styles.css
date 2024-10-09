@@ -1,0 +1,734 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rammetto+One&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+
+    button {
+        background-color: transparent;
+        border: 2px solid #95bf07;
+        color: yellowgreen;
+        padding: 8px 20px;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        text-decoration: none;
+        width: auto;
+    }
+    
+    button:hover {
+        background-color: #95b507;
+        color: black;
+    }
+    
+    button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+        );
+        transition: all 0.4s;
+    }
+    
+    button:hover::before {
+        left: 100%;
+    }
+
+.container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.45); /* Adjust opacity as needed */
+    z-index: 1;
+    height: 100vh;
+    width: 100%;
+}
+
+.navbar, .hero {
+    position: relative;
+    z-index: 2;
+}
+
+
+.navbar .main-logo {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+
+.navlist li a {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    font-weight: 600;
+}
+
+
+.hero-right h1 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.hero p, .hero span {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.navbar {
+    display: flex;
+    height: 13vh;
+    width: 100%;
+    position: relative;
+}
+
+/* Adjust the icons container */
+.icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    height: 13vh;
+
+}
+.icons i{
+    font-size: 0.5rem;
+}
+
+/* Login button styles */
+.login-container{
+    display: flex;
+    height: 13vh;
+    width: 15%;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.login-btn {
+    background-color: transparent;
+    border: 2px solid yellow;
+    color: yellow;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.login-btn:hover {
+    background-color: yellow;
+    color: black;
+}
+
+.login-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+            120deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent
+    );
+    transition: all 0.4s;
+}
+
+.login-btn:hover::before {
+    left: 100%;
+}
+
+.container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.65); /* Black transparent layer */
+    z-index: 1;
+}
+
+
+.container{
+    height: 100vh;
+    width: 100%;
+    background-image: url(../..//images/home-img.png);
+    background-color: rgba(0, 0, 0, 0.53);
+}
+.navbar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 13vh;
+    width: 100%;
+}
+.navbar .navlist{
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+    height: 13vh;
+    width: 45%;
+    padding-left: 2.5rem;
+}
+.navbar .main-logo{
+    display:flex;
+    align-items: center;
+    height: 13vh;
+    width: 25%;
+    font-size: 3rem;
+    color: white;
+    padding-left: 3rem;
+}
+.navbar .main-logo span{
+    font-size: 3rem;
+    color: yellow;
+}
+.navlist li{
+    list-style: none;
+}
+.navlist li a{
+    text-decoration: none;
+    color: #b6e828;
+    font-size: 1.1rem;
+    position: relative;
+}
+.navlist a::after, .navlist .active::after{
+    content: "";
+    position: absolute;
+    background-color: yellow;
+    bottom: -5px;
+    left: 0;
+    height: .25rem;
+    width: 0%;
+    border-radius: 2rem;
+    transition: .5s ease-in-out;
+
+}
+.navlist a:hover::after, .navlist .active::after{
+    width: 50%;
+}
+.icons .fa-brands{
+    font-size: 2rem;
+    padding: .5rem 0.8rem;
+    color: white;
+    margin: 0rem 0.5rem;
+    padding: 0.5rem;
+}
+.icons .fa-brands:hover{
+    background-color: #b6e828;
+    cursor: pointer;
+}
+.hero{
+    display: flex;
+    height: 87vh;
+    width: 90%;
+    margin: auto;
+    justify-content: space-between;
+
+}
+.hero-left{
+    display: flex;
+    align-items: flex-end; /* or flex-start if you want the content at the top */
+    justify-content: flex-start; /* Ensure content is aligned to the left */
+    margin-bottom: 2rem;
+    width: 100%; /* Ensures the element spans the full width */
+}
+
+.hero p{
+    font-size: 1rem;
+    color: white;
+
+}
+.hero span{
+    font-size: 1rem;
+    color: #b6e828;
+}
+.hero-right{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    align-items: end;
+}
+.hero-right h1{
+    font-size: 4rem;
+    color: white;
+    text-align: right;
+    margin-top: 10rem;
+    font-weight: bold;
+
+
+}
+
+.container-2{
+height: 300vh;
+width: 100%;
+background: radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, rgb(10, 10, 10) 99.4%);
+color: white;
+}
+.about-top{
+height: 90vh;
+width: 100%;
+display: flex;
+}
+
+.about-top-left{
+    
+    height: 88vh;
+    width: 65%;
+    margin: 2rem 3rem;
+    padding-left: 5rem;
+    
+}
+.about-top-left h3{
+    margin-left: 3rem;
+    font-size: 0.1rem;
+    font-weight: 600;
+}
+.about-top-left h1{
+    font-size: 4rem;
+    font-weight: 550;
+}
+.about-top-left span{
+    color: #b6e828; 
+    font-weight: 550;
+}
+.about-top-left p{
+    font-size: 1rem;
+    font-weight: 300;
+    margin-top: 2rem;
+}
+
+.about-top-right{
+    height: 80vh;
+    width: 35%;
+    
+}
+.about-top-right img
+{
+    height: 90vh;
+    width: 100%;
+    object-fit: fill;
+    
+}
+
+.about-middle{
+    height: 90vh;
+    width: 100%;
+    display: flex;
+}
+.about-middle-left{
+    height: 90vh;
+    width: 40%;
+}
+.about-middle-left img{
+height: 90vh;
+width: 100%;
+object-fit: cover;
+  
+    
+}
+.about-middle-right{
+    height: 80vh;
+    width: 60%;
+    margin-top: 5rem;
+    margin-right: 5rem;
+    padding: 3rem;
+    text-align: right;
+}
+.about-middle-right h3{
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-right: 5rem;
+}
+.about-middle-right h1{
+    font-size: 4rem;
+    font-weight: 600;
+}
+.about-middle-right p{
+    font-size: 1rem;
+    font-weight: 300;
+    margin-top: 3rem;
+}
+
+
+.about-lower-middle{
+    height: 70vh;
+    width: 100%;
+    display: flex;
+}
+.lower-middle-left{
+    display: flex;
+    height:70vh;
+    width: 50%;
+    align-items: center;
+    justify-content: center;
+    line-height: 5rem;
+    flex-direction: column;
+}
+.lower-middle-left h1 span{
+    font-size: 15rem;
+    color: #b6e828;
+    font-weight: 500;
+    font-style: italic;
+
+}
+.lower-middle-left h1{
+    font-size: 7rem;
+    font-weight: bold;
+    font-style: italic;
+    color: #b6e828;
+}
+.lower-middle-left h2{
+    font-size: 6rem;
+    font-weight: bold;
+    font-style: italic;
+}
+.lower-middle-left h3{
+    font-size: 2.5rem;
+    font-weight: bold;
+    font-style: italic;
+}
+.lower-middle-right{
+    height: 70vh;
+    width: 50%;
+}
+.lower-middle-right img{
+    height: 70vh;
+    width: 100%;
+    object-fit: cover;
+}
+/* About Section Container-2 Bottom content */
+.about-bottom{
+    display: flex;
+    flex-direction: column;
+    height: 50vh;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+}
+.quote{
+    line-height: 4rem;
+    margin-top: 3rem;
+}
+.quote h2{
+    font-size: 3rem;
+    font-weight: 600;
+}
+.quote h3{
+    font-size: 1.5rem;
+    margin-left: 23rem;
+}
+.about-bottom button{
+ margin-left: 4rem;
+    } 
+
+
+.container-3{
+    background-image: url(../../images/pic15.jpg);
+    position: relative;
+    /* display: inline-block; */
+    height: 90vh;
+    width: 100%;
+
+}
+.container-3 .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); 
+ }
+
+.service{
+    display: flex;
+    flex-direction: column;
+    filter: brightness(120%);
+
+}
+.service-top{
+    display: flex;
+    flex-direction: column;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    padding: 0rem 3rem;
+}
+.service-top h2 {
+    font-size: 3rem;
+    font-weight: 700;
+}
+.service-top span{
+    color: #b6e828;
+    font-weight: 700;
+}
+.service-top p{
+    font-size: 1rem;
+    font-weight: 300;
+    margin: 1rem 5rem ;
+    padding: 2rem 12rem;
+    text-align: center;
+}
+.service-middle{
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem;
+
+}
+.top-icon{
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+}
+.bottom-icon
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.service-middle img{
+    height: 5rem;
+    margin: 1rem 3rem;
+}
+.service-middle h3{
+    margin-right: 5rem;
+    color: white;
+    font-weight: 500;
+    font-size: 1rem;
+}
+.service-bottom{
+    text-align: center;
+    justify-content: center;
+}
+.service-bottom h3{
+    margin: 2rem 0rem 2rem 0rem;
+    font-size: 0.9rem
+}
+
+/* container-4 for contact and check calender */
+.container-4{
+    height: 85vh;
+    width: 100%;
+}
+.contact-page{
+    display: flex;
+    width: 100%;
+    height: 85vh;
+
+  
+}
+.contact-page .contact-left{
+    width: 50%;
+    height: 85vh;
+}
+.contact-page .contact-left img{
+    height: 85vh;
+    width: 100%;
+    object-fit: cover;
+}
+.contact-page .contact-right{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    text-align: start;
+    padding: 2rem 5rem 0rem 5rem;
+    align-items: center;
+    justify-content: space-evenly;
+    background: linear-gradient(109.6deg, rgba(0, 0, 0, 0.93) 11.2%, rgb(63, 61, 61) 78.9%);
+    color: white;
+}
+.contact-page .contact-right h1{
+    font-size: 3rem;
+    font-weight: bold;
+}
+.contact-page .contact-right p{
+    text-align: start;
+    font-size: 0.9rem;
+    font-weight: 300;
+   
+}
+.contact-page .contact-right h4{
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+.contact-page .contact-right button{
+    width: 12rem;
+} 
+/* footer page */
+.container-5{
+    height: 100vh;
+    width: 100%;
+    background: linear-gradient(109.6deg, rgba(0, 0, 0, 0.93) 11.2%, rgb(63, 61, 61) 78.9%);
+}
+.last-top{
+    display: flex;
+    height: 50vh;
+}
+.last-top-left{
+    width: 47%;
+    height: 50vh;
+}
+.last-top-left .left-logo {
+    display: flex;  
+    
+
+}
+.last-top-left .left-logo img{
+    height: 7rem;
+    margin-left: 2rem;
+    margin-top: 1rem;
+}
+.last-top-left .left-logo h3{
+    margin-top: 5.2rem;
+    margin-left: 1rem;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: white;
+}
+.last-top-left .left-logo span{
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #b6e828;
+}
+
+.last-top-left .address-bar{
+    display: flex;
+    flex-direction: column;
+    margin-left: 9rem;
+    margin-top: 3rem;
+    gap: 3rem;
+    color: 	#A9A9A9;
+    width: 100%;
+    
+}
+.last-top-left .address-bar i{
+    font-size: 1rem;
+    font-weight: 900;
+}
+.last-top-right{
+    width: 53%;
+}
+.last-top-right img{
+    height: 50vh;
+    width: 100%;
+    object-fit: cover;
+}
+.last-middle{
+    display: flex;
+    height: 30vh;
+    width: 100%;
+}
+.last-middle-left{
+    height: 30vh;
+    width: 50%;
+    
+}
+.last-middle-left .left-middle-logo {
+    display: flex;  
+    
+
+}
+.last-middle-left .left-middle-logo img{
+    height: 3rem;
+    margin: 0rem 0rem 0rem 4rem;
+
+}
+.last-middle-left .left-middle-logo h3{
+    margin-top: 1.3rem;
+    margin-left: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+}
+.last-middle-left .left-middle-logo span{
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #b6e828;
+}
+.last-middle-left .social-icon{
+    margin: 0.5rem 2rem 1rem 9rem;
+    font-size: 1.4rem;
+    color: #A9A9A9;
+}
+.social-icon i{
+    padding: 1rem 2rem 1rem 0rem;
+    font-size: 1.2rem;
+    color: white;
+}
+.social-icon a{
+    text-decoration: none;
+    color: #A9A9A9;
+    font-size: 1.2rem;
+    font-weight: 300;
+}
+.last-middle-right{
+    height: 30vh;
+    width: 50%;
+}
+.last-middle-right table{
+    height: 30vh;
+    width: 100%;
+    text-align: start;
+}
+.last-middle-right th{
+    font-size: 1.6rem;
+    color: white;
+    font-weight: 500;
+    margin-right: 3rem;
+    text-align: start;
+}
+.last-middle-right a{
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-decoration: none;
+    color: #A9A9A9;
+}
+.last-bottom{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20vh;
+    width: 100%;
+    padding:2rem 9rem ;
+    font-size: 0.9rem;
+    color: #A9A9A9;
+}
+
+.homePage {
+    display: inline-block; /* Ensures margin applies properly */
+    margin-top: 20px;      /* Adjust this value for the desired gap */
+    color: yellowgreen;    /* Retains the color */
+    text-decoration: none; /* Optional: Removes underline from the link */
+}
+
+
+
+
+

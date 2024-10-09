@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bookAppointment.css">
+    <title>Futuristic Appointment Booking</title>
+
+</head>
+<body>
+<div class="background"></div>
+<div class="overlay"></div>
+<div class="container">
+    <div class="shop-id-display" id="shopIdDisplay">ShopID: <span id="shopId"></span></div>
+    <div class="booking-panel">
+        <h1>Book Your Appointment</h1>
+        <form class="booking-form" id="appointmentForm">
+
+            <div class="form-group">
+                <label for="customerID">Customer ID</label>
+                <input type="text" id="customerID" required>
+            </div>
+            <div class="form-group">
+                <label for="customerName">Customer Name</label>
+                <input type="text" id="customerName" required>
+            </div>
+            <div class="form-group">
+                <label for="customerEmail">Email</label>
+                <input type="email" id="customerEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="customerPhone">Phone</label>
+                <input type="tel" id="customerPhone" required>
+            </div>
+            <div class="form-group">
+                <label for="carPlateNumber">Car Plate Number</label>
+                <input type="text" id="carPlateNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="service">Service</label>
+                <select id="service" name="service" required>
+                    <option value="">Select a service</option>
+                </select>
+
+            </div>
+        </form>
+        <div class="notification-container" id="notificationContainer">
+            <div class="notification">
+                <div class="notification-icon">✅</div>
+                <div class="notification-content">
+                    <h3 style="color: black">Appointment Booked!</h3>
+                    <p>A confirmation email has been sent to your inbox.</p>
+                </div>
+                <button class="close-btn" onclick="closeNotification()">×</button>
+            </div>
+        </div>
+
+        <div class="booking-details">
+            <div class="calendar-container">
+                <h2>Select Date</h2>
+                <div class="calendar-header">
+                    <button class="btn" id="prevMonth">&lt;</button>
+                    <h3 id="currentMonth"></h3>
+                    <button class="btn" id="nextMonth">&gt;</button>
+                </div>
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Calendar days will be dynamically inserted here -->
+                </div>
+            </div>
+
+            <div class="time-slots">
+                <h2>Available Time Slots</h2>
+                <div class="time-slot-grid" id="timeSlotGrid">
+                    <!-- Time slots will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+
+        <button class="btn" id="bookAppointment">Book Appointment</button>
+    </div>
+</div>
+
+<script src="bookAppointment.js"></script>
+</body>
+</html>

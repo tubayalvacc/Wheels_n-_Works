@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheels n'Works Signup</title>
+    <link rel="icon" href="../images/favicon_io/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="adminRegister.css">
+
+    <style>
+        @keyframes dotAnimation {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .dot {
+            display: inline-block;
+            animation: dotAnimation 2s infinite;
+        }
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+        .dot:nth-child(4) { animation-delay: 0.6s; }
+        #message-box {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #67a60a;
+        }
+        #message-box.success {
+            color: #c3d1aa;
+        }
+    </style>
+</head>
+<body>
+<div class="overlay">
+    <div class="signup-container">
+        <div class="logo">
+            <div class="navbar">
+                <a href="#" class="main-logo">
+                    <span class="wheel">Wheels</span> <span class="highlight">n'</span> <span class="works">works</span>
+                </a>
+            </div>
+            <h1>Admin Signup</h1>
+            <p>We're excited to have you on board! Please fill out the form below.</p>
+        </div>
+        <div class="signup-box">
+            <h2>Signup Form</h2>
+            <form id="signup-form">
+                <div class="input-box">
+                    <input type="text" id="nameSurname" required>
+                    <label for="nameSurname">Name Surname</label>
+                </div>
+                <div class="input-box">
+                    <input type="email" id="email" required>
+                    <label for="email">Email</label>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="phone" required>
+                    <label for="phone">Phone Number</label>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="shopName" required>
+                    <label for="shopName">Shop Name</label>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="shopLocation" required>
+                    <label for="shopLocation">Shop Location</label>
+                </div>
+                <button type="submit" class="btn">Send</button>
+            </form>
+            <div id="message-box"></div>
+        </div>
+        <div class="login-prompt">
+            <p>Already a member?</p>
+            <a href="adminLogin.html" class="btn">Login</a>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('signup-form');
+        const messageBox = document.getElementById('message-box');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const nameSurname = document.getElementById('nameSurname').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const shopName = document.getElementById('shopName').value;
+            const shopLocation = document.getElementById('shopLocation').value;
+
+            messageBox.innerHTML = 'Processing <span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>';
+            try {
+                const response = await fetch('http://localhost:8888/VehicleRepairSystem/vehicle-repair-shop/src/api/send_mail.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nameSurname,
+                        email,
+                        phone,
+                        shopName,
+                        shopLocation,
+                    }),
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+
+                    // Check for valid JSON response
+                    if (response.headers.get('content-type')?.includes('application/json')) {
+                        if (result.status === 'success') {
+                            messageBox.className = 'success';
+                            messageBox.textContent = 'We received your details. We will contact you soon! Redirecting to login page...';
+
+                            setTimeout(() => {
+                                window.location.href = 'adminLogin.html';
+                            }, 3000);
+                        } else {
+                            messageBox.textContent = result.message || 'Submission failed!';
+                            messageBox.style.color = 'red';
+                        }
+                    } else {
+                        throw new Error('Unexpected response format');
+                    }
+                } else {
+                    throw new Error('Network response was not ok.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                messageBox.textContent = 'An error occurred. Please try again.';
+                messageBox.style.color = 'red';
+            }
+        });
+    });
+</script>
+
+
+</script>
+</body>
+</html>

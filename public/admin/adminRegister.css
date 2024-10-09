@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body, html {
+    height: 100%;
+    background: #ffffff;
+}
+
+.overlay {
+    background-image: url('image3.jpg'); /* Your background image here */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Black transparent layer */
+    z-index: 1;
+}
+
+.signup-container {
+    position: relative;
+    z-index: 2;
+    max-width: 450px;
+    background-color: rgba(0, 0, 0, 0.64); /* Slightly transparent black */
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.navbar .main-logo {
+    font-size: 48px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 20px;
+    text-decoration: none;
+}
+
+.navbar .wheel {
+    color: white; /* White color for 'Wheel' */
+}
+
+.navbar .highlight {
+    color: yellowgreen; /* Yellow-green color for 'n'' */
+}
+
+.navbar .works {
+    color: yellowgreen; /* Yellow-green color for 'works' */
+}
+
+.logo h1 {
+    font-size: 24px;
+    color: white;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.logo p {
+    color: #ccc;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.signup-box {
+    width: 100%;
+}
+
+.signup-box h2 {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.input-box {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 10px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid #fff;
+    color: #fff;
+    font-size: 18px;
+    outline: none;
+}
+
+.input-box label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    color: #fff;
+    transform: translateY(-50%);
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.input-box input:focus ~ label,
+.input-box input:valid ~ label {
+    top: -5px;
+    left: 10px;
+    color: yellowgreen;
+    font-size: 14px;
+}
+
+.btn {
+    background-color: yellowgreen;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-weight: 600;
+}
+
+.btn:hover {
+    background-color: #fff;
+    color: yellowgreen;
+    border: 1px solid yellowgreen;
+}
+/* Add this to the end of your existing signupStyle.css */
+.login-prompt {
+    margin-top: 20px;
+}
+
+.login-prompt p {
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.login-prompt .btn {
+    background-color: yellowgreen;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 600;
+}
+
+.login-prompt .btn:hover {
+    background-color: #fff;
+    color: yellowgreen;
+    border: 1px solid yellowgreen;
+}
+.success-message {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 1000;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.success-message h3 {
+    color: #cdd8b7;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.success-message p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.success-message .redirect-btn {
+    background-color: #d4dfbf;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.signup-container {
+    position: relative;
+    z-index: 2;
+    max-width: 450px;
+    background-color: rgba(0, 0, 0, 0.65); /* Slightly transparent black */
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 10px 3px #3f6505; /* Glowing border effect */
+    overflow: hidden; /* Prevents any overflow from inner elements */
+}

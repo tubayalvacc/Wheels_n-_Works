@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile-Wheels n'Works</title>
+    <link rel="stylesheet" href="adminProfileStyle.css">
+    <link rel="stylesheet" href="confirmApp.css">
+    <link rel="stylesheet" href="edit_appointment.css">
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+</head>
+<body>
+<div class="overlay">
+    <div class="profile-container">
+        <div class="logo">
+            <div class="navbar">
+                <a href="#" class="main-logo">
+                    <span class="wheel">Wheels</span> <span class="highlight">n'</span> <span class="works">Works</span>
+                </a>
+            </div>
+            <h1>Shop Owner Profile</h1>
+        </div>
+        <div class="profile-content">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <h1>Profile</h1>
+                <ul>
+                    <li class="active" data-section="profile-info">Profile Info</li>
+                    <li data-section="shop-details">Shop Details</li>
+                    <li data-section="appointments">Appointments</li>
+                    <li data-section="invoice-details">Invoices</li>
+                    <li data-section="service-code">Services</li>
+                    <li data-section="reviews-ratings">Reviews & Ratings</li>
+                    <li data-section="social-media">Social Media</li>
+                    <li data-section="map-location">Map Location</li>
+                </ul>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="content">
+                <!-- Profile Information -->
+                <section id="profile-info" class="active">
+                    <div class="profile-details">
+                        <h2>Profile Details</h2>
+                        <p><strong>Owner ID:</strong> <span id="owner-id"></span></p>
+                        <p><strong>Shop ID:</strong> <span id="profile-shop-id"></span></p>
+                        <p><strong>Name:</strong> <span id="name-display"></span></p>
+                        <p><strong>Contact Info:</strong> <span id="contact-info-display"></span></p>
+                        <p><strong>Username:</strong> <span id="username-display"></span></p>
+                        <p><strong>Email:</strong> <span id="profile-email-display"></span></p>
+
+                    </div>
+                    <button id="edit-profile-button" class="edit-button">Edit</button>
+                    <button id="save-profile-button" class="save-button" style="display:none;">Save Changes</button>
+                </section>
+
+                <!-- Shop Details -->
+                <section id="shop-details" style="display: none;">
+                    <h2>Shop Details</h2>
+                    <div class="shop-details-content">
+                        <p><strong>Shop ID:</strong> <span id="shopID"></span></p>
+                        <p><strong>Shop Name:</strong> <span id="shop-name-display"></span></p>
+                        <p><strong>Location:</strong> <span id="shop-location-display"></span></p>
+                        <p><strong>Contact Number:</strong> <span id="shop-contact-display"></span></p>
+                        <p><strong>Email:</strong> <span id="email-display"></span></p>
+
+                    </div>
+                    <button id="edit-shop-button" class="edit-button">Edit</button>
+                    <button id="save-shop-button" class="save-button" style="display:none;">Save Changes</button>
+                </section>
+
+                <section id="appointments" class="appointments-section active">
+                    <h2>Appointments</h2>
+                    <input type="hidden" id="shopOwnerId" value="13">
+                    <div id="appointments-list" class="appointments-list">
+                        <!-- Example appointment entry -->
+                        <div class="appointment-item">
+                            <button class="edit-app-btn" data-appointment-id="${appointment.AppointmentID}" data-customer-id="${appointment.CustomerID}">Edit</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Modal Structure -->
+                <div id="editAppointmentModal" class="modal">
+                    <input type="hidden" id="modal-shopId" />
+
+                    <div class="modal-content">
+                        <span class="close-btn">&times;</span>
+                        <h2>Edit Appointment</h2>
+                        <form id="editForm">
+                            <input type="hidden" id="modal-appointmentId">
+                            <input type="hidden" id="modal-customerId">
+
+                            <label for="modal-date">Date:</label>
+                            <input type="date" id="modal-date" name="date" required>
+
+                            <label for="modal-time">Available Slots:</label>
+                            <select id="modal-time" name="time" required>
+                                <option value="">Select a time slot</option>
+                            </select>
+
+                            <select id="modal-serviceCode" name="serviceCode">
+                                <!-- Options will be populated dynamically -->
+                            </select>
+
+
+                            <label for="modal-carPlateNumber">Car Plate Number:</label>
+                            <input type="text" id="modal-carPlateNumber" name="carPlateNumber" required>
+
+                            <label for="modal-customerName">Customer Name:</label>
+                            <input type="text" id="modal-customerName" name="customerName" required>
+
+                            <label for="modal-customerEmail">Customer Email:</label>
+                            <input type="email" id="modal-customerEmail" name="customerEmail" required>
+
+                            <button type="button" id="updateButton">Update Appointment</button>
+                        </form>
+                    </div>
+                </div>
+
+
+                <section id="invoice-details" style="display: none;">
+                    <h2>Invoices</h2>
+                    <p>Invoices content goes here...</p>
+
+                    <button id="editInvoiceButton" class="edit-button">Edit </button>
+                    <button id="saveInvoiceButton" class="save-button" style="display:none;">Save Changes</button>
+                </section>
+
+                <section id="service-code" style="display: none;">
+                    <h2>Services</h2>
+                    <p>Services content goes here...</p>
+
+                    <button id="editServiceButton" class="edit-button">Edit </button>
+                    <button id="saveServiceButton" class="save-button" style="display:none;">Save Changes</button>
+
+                </section>
+
+                <!-- Other Sections -->
+                <section id="reviews-ratings" style="display: none;">
+                    <h2>Reviews & Ratings</h2>
+
+                    <div class="review-item">
+                        <p><strong>Reviewer Name:</strong> John Doe</p>
+                        <p><strong>Rating:</strong> ⭐⭐⭐⭐☆</p>
+                        <p><strong>Comment:</strong> "Great service and friendly staff! I had a wonderful experience and will definitely come back again."</p>
+                    </div>
+
+                    <div class="review-item">
+                        <p><strong>Reviewer Name:</strong> Jane Smith</p>
+                        <p><strong>Rating:</strong> ⭐⭐⭐⭐⭐</p>
+                        <p><strong>Comment:</strong> "Excellent work! My car was fixed in no time, and the prices were reasonable."</p>
+                    </div>
+
+                    <div class="review-item">
+                        <p><strong>Reviewer Name:</strong> Mike Johnson</p>
+                        <p><strong>Rating:</strong> ⭐⭐⭐⭐☆</p>
+                        <p><strong>Comment:</strong> "The repair was done quickly, but I wish they had better waiting room facilities. Overall, good service."</p>
+                    </div>
+
+                    <div class="review-item">
+                        <p><strong>Reviewer Name:</strong> Sarah Lee</p>
+                        <p><strong>Rating:</strong> ⭐⭐⭐⭐⭐</p>
+                        <p><strong>Comment:</strong> "Fantastic experience! The team was very professional and my car runs like new. Highly recommend."</p>
+                    </div>
+
+                    <button id="edit-review-button" class="edit-button">Edit</button>
+                    <button id="save-review-button" class="save-button" style="display:none;">Save Changes</button>
+                </section>
+
+
+                <section id="social-media" style="display: none;">
+                    <h2>Social Media</h2>
+                    <p>Social media content goes here...</p>
+
+                        <button id="editSocialButton" class="edit-button">Edit </button>
+                        <button id="saveSocialButton" class="save-button" style="display:none;">Save Changes</button>
+
+                </section>
+
+                <section id="map-location" style="display: none;">
+                    <h2>Map Location</h2>
+                    <p>Map location content goes here...</p>
+
+                        <button id="editMapButton" class="edit-button">Edit</button>
+                        <button id="saveMapButton" class="save-button" style="display:none;">Save Changes</button>
+
+                </section>
+            </main>
+        </div>
+    </div>
+</div>
+
+<script src="../js/adminProfile.js"></script>
+<script src="../js/adminPShops.js"></script>
+<script src="../js/adminAppointments.js"></script>
+
+
+
+</body>
+</html>

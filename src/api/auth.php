@@ -20,7 +20,7 @@ error_reporting(E_ALL);
 
 class Auth {
     private $conn;
-    private $table_name = "users";
+    private $table_name = "Customers"; // Ensure this matches your table name
 
     public function __construct($db) {
         $this->conn = $db;
@@ -28,7 +28,7 @@ class Auth {
 
     public function register($name_surname, $email, $password, $contact_number) {
         // Check if email already exists
-        $query = "SELECT COUNT(*) FROM " . $this->table_name . " WHERE email = :email";
+        $query = "SELECT COUNT(*) FROM " . $this->table_name . " WHERE Email = :email";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':email', $email);
         $stmt->execute();
@@ -38,7 +38,7 @@ class Auth {
         }
 
         // Insert new user
-        $query = "INSERT INTO " . $this->table_name . " (email, password, contact_number, name_surname, created_at) VALUES (:email, :password, :contact_number, :name_surname, NOW())";
+        $query = "INSERT INTO " . $this->table_name . " (Email, password, ContactNumber, NameSurname, created_at) VALUES (:email, :password, :contact_number, :name_surname, NOW())";
         $stmt = $this->conn->prepare($query);
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         $stmt->bindParam(':email', $email);
@@ -57,7 +57,7 @@ class Auth {
 
     public function login($email, $password) {
         // Select user based on email
-        $query = "SELECT * FROM " . $this->table_name . " WHERE email = :email";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE Email = :email";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':email', $email);
         $stmt->execute();
@@ -72,12 +72,12 @@ class Auth {
         }
     }
 
-    public function update($UserID, $name_surname, $email, $password, $contact_number) {
+    public function update($CustomerID, $name_surname, $email, $password, $contact_number) {
         // Update user details
-        $query = "UPDATE " . $this->table_name . " SET name_surname = :name_surname, email = :email, password = :password, contact_number = :contact_number WHERE UserID = :UserID";
+        $query = "UPDATE " . $this->table_name . " SET NameSurname = :name_surname, Email = :email, password = :password, ContactNumber = :contact_number WHERE CustomerID = :CustomerID";
         $stmt = $this->conn->prepare($query);
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        $stmt->bindParam(':UserID', $UserID);
+        $stmt->bindParam(':CustomerID', $CustomerID);
         $stmt->bindParam(':name_surname', $name_surname);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $hashedPassword);
@@ -86,32 +86,33 @@ class Auth {
         return $stmt->execute() ? ["success" => true, "message" => "User updated successfully!"] : ["success" => false, "message" => "User update failed!"];
     }
 
-    public function delete($UserID) {
+    public function delete($CustomerID) {
         // Delete user
-        $query = "DELETE FROM " . $this->table_name . " WHERE UserID = :UserID";
+        $query = "DELETE FROM " . $this->table_name . " WHERE CustomerID = :CustomerID";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':UserID', $UserID);
+        $stmt->bindParam(':CustomerID', $CustomerID);
 
         return $stmt->execute() ? ["success" => true, "message" => "User deleted successfully!"] : ["success" => false, "message" => "User deletion failed!"];
     }
 
-    public function getById($UserID) {
+    public function getById($CustomerID) {
         // Get user by ID
-        $query = "SELECT UserID, name_surname, email, contact_number, created_at FROM " . $this->table_name . " WHERE UserID = :UserID";
+        $query = "SELECT CustomerID, NameSurname, Email, ContactNumber, created_at FROM " . $this->table_name . " WHERE CustomerID = :CustomerID";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':UserID', $UserID);
+        $stmt->bindParam(':CustomerID', $CustomerID);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getAll() {
         // Get all users
-        $query = "SELECT UserID, name_surname, email, contact_number, created_at FROM " . $this->table_name;
+        $query = "SELECT CustomerID, NameSurname, Email, ContactNumber, created_at FROM " . $this->table_name;
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+
 
 // Instantiate Database and Auth classes
 $database = new Database();
@@ -122,9 +123,6 @@ $auth = new Auth($db);
 $request_method = $_SERVER['REQUEST_METHOD'];
 $request_body = file_get_contents("php://input");
 $request_data = json_decode($request_body, true);
-
-error_log("Request Method: $request_method");
-error_log("Request Body: $request_body");
 
 // Handle request
 switch ($request_method) {
@@ -151,10 +149,11 @@ switch ($request_method) {
         $action = isset($_GET['action']) ? $_GET['action'] : '';
 
         if ($action === 'register') {
-            $name_surname = isset($request_data['name_surname']) ? $request_data['name_surname'] : '';
-            $email = isset($request_data['email']) ? $request_data['email'] : '';
-            $password = isset($request_data['password']) ? $request_data['password'] : '';
-            $contact_number = isset($request_data['contact_number']) ? $request_data['contact_number'] : '';
+            // Handle registration logic
+            $name_surname = $request_data['name_surname'] ?? '';
+            $email = $request_data['email'] ?? '';
+            $password = $request_data['password'] ?? '';
+            $contact_number = $request_data['contact_number'] ?? '';
 
             if (empty($name_surname) || empty($email) || empty($password) || empty($contact_number)) {
                 echo json_encode(["success" => false, "message" => "All fields are required!"]);
@@ -164,8 +163,9 @@ switch ($request_method) {
             $result = $auth->register($name_surname, $email, $password, $contact_number);
             echo json_encode($result);
         } elseif ($action === 'login') {
-            $email = isset($request_data['email']) ? $request_data['email'] : '';
-            $password = isset($request_data['password']) ? $request_data['password'] : '';
+            // Handle login logic
+            $email = $request_data['email'] ?? '';
+            $password = $request_data['password'] ?? '';
 
             if (empty($email) || empty($password)) {
                 echo json_encode(["success" => false, "message" => "Both email and password are required!"]);
@@ -178,6 +178,7 @@ switch ($request_method) {
             echo json_encode(["success" => false, "message" => "Invalid action!"]);
         }
         break;
+
 
     case 'PUT':
         $UserID = isset($request_data['UserID']) ? $request_data['UserID'] : '';

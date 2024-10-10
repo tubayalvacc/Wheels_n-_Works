@@ -3,276 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+    <title>Customer Profile</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <link href="../public/css/styleprofile.css" rel="stylesheet">
+    <!-- Add this to your HTML -->
+    <link href='https://fullcalendar.io/releases/core/5.10.1/main.min.css' rel='stylesheet' />
+    <link href='https://fullcalendar.io/releases/daygrid/5.10.1/main.min.css' rel='stylesheet' />
+    <link href='https://fullcalendar.io/releases/timegrid/5.10.1/main.min.css' rel='stylesheet' />
+    <!-- FullCalendar CSS -->
+    <link href='https://unpkg.com/fullcalendar@6.0.0/main.min.css' rel='stylesheet' />
 
-        :root {
-            --primary-color: #8acd2b;
-            --bg-color: #171515;
-            --text-color: #ffffff;
-            --overlay-color: rgba(23, 21, 21, 0.75);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
-            font-family: 'Roboto', sans-serif;
-            color: var(--text-color);
-            height: 100%;
-            overflow-x: hidden;
-        }
-
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('../public/css/image5.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            z-index: -2;
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--overlay-color);
-            z-index: -1;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .profile-panel {
-            background: rgba(23, 21, 21, 0.78);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            max-width: 1200px;
-            width: 95%;
-        }
-
-        h1, h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            font-weight: 300;
-            color: var(--primary-color);
-        }
-
-        h1 { font-size: 2.5em; }
-        h2 { font-size: 1.8em; }
-
-        .profile-form {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            margin-bottom: 5px;
-            font-weight: 300;
-        }
-
-        input, select {
-            padding: 10px;
-            border: none;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-color);
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        input:disabled {
-            background: rgba(255, 255, 255, 0.05);
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .appointments {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 30px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        th {
-            background-color: rgba(23, 21, 21, 0.34);
-            color: var(--primary-color);
-        }
-
-        .btn {
-            background: var(--primary-color);
-            color: var(--bg-color);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .btn:hover {
-            background: #548808;
-        }
-
-        @media (max-width: 768px) {
-            .profile-form {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
 </head>
 <body>
-<div class="background"></div>
-<div class="overlay"></div>
 <div class="container">
-    <div class="profile-panel">
-        <h1>User Profile</h1>
-        <form class="profile-form">
-            <div class="form-group">
-                <label for="customerId">Customer ID</label>
-                <input type="text" id="customerId" disabled>
+    <aside class="sidebar">
+        <div class="profile-image">
+            <img src="../public/css/your-profile-picture.png" alt="User Profile Image">
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item"><i class="fas fa-user"></i> My Profile</a>
+            <a href="../../../VehicleRepairSystem/vehicle-repair-shop/public/index.html" class="nav-item"><i class="fas fa-home"></i> Home</a>
+            <a href="#" class="nav-item" id="bookAppointmentBtn"><i class="fas fa-calendar-plus"></i> Book Appointment</a>
+            <a href="#" class="nav-item"><i class="fas fa-envelope"></i> Contact Us</a>
+            <a href="#" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+            <a href="#" class="nav-item" id="editProfileButton"><i class="fas fa-edit"></i> Edit Profile</a>
+            <a href="#" class="nav-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </aside>
+
+
+    <main class="content">
+        <section class="profile-header">
+            <h1><strong>My</strong> Profile</h1>
+        </section>
+        <section class="profile-info">
+            <div class="personal-details">
+                <p><strong>CustomerID:</strong> <span id="customerId"></span></p>
+                <p><strong>Name:</strong> <span id="customerName"></span></p>
+                <p><strong>Email:</strong> <span id="customerEmail"></span></p>
+                <p><strong>Mobile:</strong> <span id="customerMobile"></span></p>
+                <p><strong>Address:</strong> <span id="customerAddress"></span></p>
+                <p><strong>Car Plate Number:</strong> <span id="carPlateNumber"></span></p>
+                <p><strong>Member since:</strong> <span id="memberSince"></span></p>
             </div>
-            <div class="form-group">
-                <label for="customerName">Customer Name</label>
-                <input type="text" id="customerName" required>
+            <div class="car-image-container">
+                <img src="../public/css/your-car-image.png" alt="Your Car" class="car-image">
+                <p class="car-image-title">Your Car</p>
             </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" required>
+        </section>
+
+
+        <section class="car-details">
+            <p><strong>Brand: </strong> Hyundai <span id="carBrand"></span></p>
+            <p><strong>Car: </strong> Creta <span id="carModel"></span></p>
+            <p><strong>Model: </strong> N-Line <span id="carType"></span></p>
+            <p><strong>Year:</strong>  2020 <span id="carYear"></span></p>
+            <p><strong>Color:</strong>  Black <span id="carColor"></span></p>
+        </section>
+
+
+        <section class="booking-info">
+            <h2>Current Appointments</h2>
+            <div class="appointment-container">
+                <ul id="currentAppointments">
+                    <!-- Current appointments will be populated dynamically -->
+                </ul>
             </div>
+            <details>
+                <summary><strong>Previous Appointments</strong></summary>
+                <div class="appointment-container">
+                    <ul id="previousAppointments">
+                        <!-- Previous appointments will be populated dynamically -->
+                    </ul>
+                </div>
+            </details>
+        </section>
+    </main>
+</div>
+
+<!-- Edit Profile Modal -->
+<div id="editProfileModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Edit Profile</h2>
+        <form id="editProfileForm">
+            <label for="editCustomerId">Customer ID:</label>
+            <input type="text" id="editCustomerId" name="CustomerID" readonly>
+
+            <label for="editName">Name:</label>
+            <input type="text" id="editName" name="NameSurname" required>
+
+            <label for="editEmail">Email:</label>
+            <input type="email" id="editEmail" name="Email" required>
+
+            <label for="editMobile">Mobile:</label>
+            <input type="text" id="editMobile" name="ContactNumber" required>
+
+            <label for="editAddress">Address:</label>
+            <input type="text" id="editAddress" name="Address" required>
+
+            <label for="editCarPlateNumber">Car Plate Number:</label>
+            <input type="text" id="editCarPlateNumber" name="CarPlateNumber" required>
+
+            <button type="submit">Update Profile</button>
+        </form>
+    </div>
+</div>
+<!-- Book Appointment Modal -->
+<div id="bookAppointmentModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Book Appointment</h2>
+        <form id="bookAppointmentForm">
             <div class="form-group">
-                <label for="mobileNumber">Mobile Number</label>
-                <input type="tel" id="mobileNumber" required>
-            </div>
-            <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" id="address" required>
-            </div>
-            <div class="form-group">
-                <label for="carBrand">Car Brand</label>
-                <select id="carBrand" required>
-                    <option value="">Select a car brand</option>
-                    <!-- Car brands will be dynamically inserted here -->
+                <label for="shopSelect">Select Shop:</label>
+                <select id="shopSelect" name="shopId" required>
+                    <option value="">Select a shop</option>
+                    <!-- Shop options will be populated dynamically -->
                 </select>
             </div>
+
+            <div class="form-group">
+                <label for="serviceSelect">Select Service:</label>
+                <select id="serviceSelect" name="serviceCode" required>
+                    <option value="">Select a service</option>
+                    <!-- Service options will be populated dynamically -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="appointment-date">Select Date:</label>
+                <input type="text" id="appointment-date" name="date" required>
+            </div>
+
+            <div class="form-group">
+                <div id="time-slots-container" class="time-slots-list"></div>
+                <label for="availableSlots">Available Slots:</label>
+                <select id="availableSlots" name="time" required>
+                    <option value="">Select a time slot</option>
+                    <!-- Available slots will be populated dynamically -->
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Book Appointment</button>
         </form>
+    </div>
+</div>
+<!-- Modal HTML -->
+<div id="customerEditApp-editModal" class="customerEditApp-modal">
+    <div class="customerEditApp-modal-content">
+        <span class="customerEditApp-close" onclick="customerEditAppCloseModal('customerEditApp-editModal')">&times;</span>
+        <h2>Edit Appointment</h2>
+        <form id="customerEditApp-form" class="customerEditApp-form">
 
-        <button class="btn" id="saveProfile">Save Profile</button>
+            <input type="hidden" id="customerEditApp-appointmentID" name="appointmentID">
+            <input type="hidden" id="customerEditApp-customerID" name="customerID">
+            <input type="hidden" id="customerEditApp-date" name="date">
+            <input type="hidden" id="customerEditApp-time" name="time">
 
-        <div class="appointments">
-            <h2>Appointments</h2>
-            <table>
-                <thead>
-                <tr>
-                    <th>Appointment ID</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Service</th>
-                </tr>
-                </thead>
-                <tbody id="appointmentsTable">
-                <!-- Appointments will be dynamically inserted here -->
-                </tbody>
-            </table>
-        </div>
+            <label for="customerEditApp-customerName">Name:</label>
+            <input type="text" id="customerEditApp-customerName" name="customerName" required>
+
+            <label for="customerEditApp-customerEmail">Email:</label>
+            <input type="email" id="customerEditApp-customerEmail" name="customerEmail" required>
+
+            <label for="customerEditApp-carPlateNumber">Car Plate Number:</label>
+            <input type="text" id="customerEditApp-carPlateNumber" name="carPlateNumber" required>
+
+            <label for="customerEditApp-shop">Shop:</label>
+            <select id="customerEditApp-shop" name="shop" required>
+                <!-- Options populated by customerEditAppFetchShops -->
+            </select>
+
+            <label for="customerEditApp-service">Service:</label>
+            <select id="customerEditApp-service" name="service" required>
+                <!-- Options populated by customerEditAppFetchServices -->
+            </select>
+
+            <div id="customerEditApp-calendarGrid" class="customerEditApp-calendar-grid">
+                <!-- Calendar days populated by customerEditAppInitializeCalendar -->
+            </div>
+
+            <div id="customerEditApp-timeSlotGrid" class="customerEditApp-time-slot-grid">
+                <!-- Time slots populated by customerEditAppUpdateTimeSlots -->
+            </div>
+
+            <button id="customerEditApp-updateAppointment" class="customerEditApp-button customerEditApp-save-button">Update Appointment</button>
+        </form>
     </div>
 </div>
 
+
+
+<div id="notification" class="notification">
+    <div class="checkmark-container">✔</div> <!-- This could be an icon or emoji -->
+    <div class="notification-message"></div>
+</div>
+<div id="modalOverlay" class="overlay"></div>  <!-- Modal overlay element -->
 <script>
-    // Simulated data - replace with actual data fetching logic
-    const userData = {
-        customerId: "CUST001",
-        customerName: "John Doe",
-        email: "john.doe@example.com",
-        mobileNumber: "+1234567890",
-        address: "123 Main St, City, Country",
-        carBrand: "Toyota"
-    };
-
-    const carBrands = ["Toyota", "Honda", "Ford", "BMW", "Mercedes", "Audi", "Volkswagen"];
-
-    const appointments = [
-        { id: "APT001", date: "2024-09-01", time: "10:00", service: "Oil Change" },
-        { id: "APT002", date: "2024-09-15", time: "14:30", service: "Tire Rotation" }
-    ];
-
-    // Populate user data
-    document.getElementById('customerId').value = userData.customerId;
-    document.getElementById('customerName').value = userData.customerName;
-    document.getElementById('email').value = userData.email;
-    document.getElementById('mobileNumber').value = userData.mobileNumber;
-    document.getElementById('address').value = userData.address;
-
-    // Populate car brands
-    const carBrandSelect = document.getElementById('carBrand');
-    carBrands.forEach(brand => {
-        const option = document.createElement('option');
-        option.value = brand;
-        option.textContent = brand;
-        carBrandSelect.appendChild(option);
-    });
-    carBrandSelect.value = userData.carBrand;
-
-    // Populate appointments table
-    const appointmentsTable = document.getElementById('appointmentsTable');
-    appointments.forEach(apt => {
-        const row = appointmentsTable.insertRow();
-        row.insertCell(0).textContent = apt.id;
-        row.insertCell(1).textContent = apt.date;
-        row.insertCell(2).textContent = apt.time;
-        row.insertCell(3).textContent = apt.service;
-    });
-
-    // Save profile function (to be implemented)
-    document.getElementById('saveProfile').addEventListener('click', () => {
-        const updatedUserData = {
-            customerId: document.getElementById('customerId').value,
-            customerName: document.getElementById('customerName').value,
-            email: document.getElementById('email').value,
-            mobileNumber: document.getElementById('mobileNumber').value,
-            address: document.getElementById('address').value,
-            carBrand: document.getElementById('carBrand').value
-        };
-        console.log('Saving profile:', updatedUserData);
-        // Here you would typically send this data to your backend
-        alert('Profile saved! Check console for details.');
-    });
 </script>
+<script src='https://fullcalendar.io/releases/core/5.10.1/main.min.js'></script>
+<script src='https://fullcalendar.io/releases/daygrid/5.10.1/main.min.js'></script>
+<script src='https://fullcalendar.io/releases/timegrid/5.10.1/main.min.js'></script>
+<!-- FullCalendar JS -->
+<script src='https://unpkg.com/fullcalendar@6.0.0/main.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="../public/js/CustomerProfile.js"></script>
 </body>
 </html>

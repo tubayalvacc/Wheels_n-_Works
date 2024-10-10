@@ -1,0 +1,816 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: rgb(24, 32, 21);
+    color: #171515;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background: #ffffff;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 20px 6px rgb(23, 21, 21);
+}
+
+.profile-image {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.profile-image img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 3px solid #8acd2b;
+    transition: all 0.3s ease;
+}
+
+.profile-image img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px #8acd2b;
+
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-item {
+    color: #171515;
+    text-decoration: none;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.nav-item:hover {
+    background: #171515;
+    color: rgb(255, 255, 255);
+    transform: translateX(10px);
+}
+
+.content {
+    flex: 1;
+    padding: 2rem;
+}
+
+.profile-header h1 {
+    font-size: 3rem;
+    color: #8acd2b;
+    margin-bottom: 2rem;
+}
+
+.car-details, .booking-info {
+    background: rgb(255, 255, 255);
+    padding: 2rem;
+    border-radius: 10px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgb(255, 255, 255);
+    transition: all 0.3s ease;
+
+}
+
+.car-details:hover, .booking-info:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 10px 5px yellowgreen; /* Glowing border effect */
+}
+
+/* Profile Info Section */
+.profile-info {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for the profile info section */
+.profile-info:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 10px 5px yellowgreen; /* Glowing border effect */
+
+}
+
+.personal-details {
+    flex: 1;
+    max-width: 60%;
+    max-height: 300px; /* Adjust as needed */
+    overflow-y: auto; /* Adds scroll if content exceeds height */
+}
+
+.personal-details p {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.personal-details strong {
+    color: #8acd2b;
+}
+
+.car-image-container {
+    flex: 1;
+    max-width: 30%;
+    text-align: center;
+}
+
+.car-image-container img {
+    max-width: 100%;
+    border-radius: 10px;
+
+}
+
+.car-image-title {
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    color: #171515;
+}
+
+
+.car-image-container img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.car-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.booking-info details {
+    margin-top: 1rem;
+}
+
+.booking-info summary {
+    cursor: pointer;
+    color: #8acd2b;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+/* Booking Info Section */
+.booking-info {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for the booking info section */
+.booking-info:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 10px 5px yellowgreen; /* Glowing border effect */
+}
+
+.booking-info h2 {
+    font-size: 2rem;
+    color: #8acd2b;
+    margin-bottom: 1rem;
+}
+
+/* Container for the appointments */
+.appointment-container {
+    max-height: 700px; /* Set the height you want */
+    overflow-y: auto;
+}
+
+/* Styling for appointment list */
+.booking-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.booking-info li {
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+    background: #f9f9f9;
+}
+
+.booking-info li:last-child {
+    border-bottom: none;
+}
+
+.booking-info strong {
+    color: #171515;
+}
+
+/* Styling for the details section */
+.booking-info details {
+    margin-top: 1rem;
+    border: 1px solid #8acd2b;
+    border-radius: 5px;
+    padding: 0.5rem;
+    background: #f5f5f5;
+}
+
+.booking-info summary {
+    cursor: pointer;
+    color: #8acd2b;
+    padding: 0.5rem;
+    border-bottom: 1px solid #8acd2b;
+}
+
+.booking-info summary:hover {
+    background: #eaf1e3;
+}
+
+
+.edit-details, .edit-appointment, .delete-appointment {
+    background: #8acd2b;
+    color: #171515;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-details:hover, .edit-appointment:hover {
+    background: rgb(160, 232, 11);
+    transform: scale(1.05);
+}
+
+.delete-appointment {
+    background: #e74c3c;
+}
+
+.delete-appointment:hover {
+    background: #c0392b;
+}
+#editAppointmentModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 10vh auto;
+    padding: 20px;
+    border: 1px solid #8acd2b;
+    width: 80%;
+    max-width: 600px;
+    max-height: 80vh;
+    border-radius: 10px;
+    position: relative;
+    overflow-y: auto;
+}
+
+.close {
+    position: sticky;
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #8acd2b;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Scrollbar styles for webkit browsers */
+.modal-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #1a1a2e;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #8acd2b;
+    border-radius: 5px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #a5f435;
+}
+
+/* Form styles */
+form {
+    display: grid;
+    gap: 1rem;
+}
+
+label {
+    font-weight: bold;
+    color: #171515;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="email"],
+select {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #8acd2b;
+    background: #ffffff;
+    color: #171515;
+}
+
+input:read-only {
+    background-color: #ffffff;
+    cursor: not-allowed;
+}
+
+button[type="submit"] {
+    background: #8acd2b;
+    color: #1a1a2e;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background: #8acd2b;
+}
+
+ .modal {
+     display: none;
+     position: fixed;
+     z-index: 1000;
+     left: 0;
+     top: 0;
+     width: 100%;
+     height: 100%;
+     overflow: auto;
+     background-color: rgba(0,0,0,0.4);
+ }
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.non-editable input {
+    background-color: #f0f0f0;
+}
+#editAppointmentModal {
+    display: none; /* Initially hidden */
+}
+
+#modalOverlay {
+    display: none; /* Initially hidden */
+}
+#timeSlotsContainer {
+    border: 1px solid #8acd2b; /* Temporary border to check visibility */
+}
+
+
+.time-slots-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    max-width: 300px;
+}
+
+.time-slot {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.time-slot.available {
+    background-color: #e6f7e6;
+    color: #2c662d;
+    cursor: pointer;
+}
+
+.time-slot.unavailable {
+    background-color: #f7e6e6;
+    color: #663c3c;
+}
+
+.time-slot.selected {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.time-slot-status {
+    font-weight: bold;
+}
+
+
+.time-slot-status {
+    font-weight: bold;
+}
+.notification {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #8acd2b;
+    color: #171515;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.5s ease-in-out;
+}
+.notification.show {
+    display: block;
+    opacity: 1;
+}
+.notification.error {
+    background-color: red;
+}
+
+.appointment-id, .appointment-date-time, .service-details, .my-shop-details {
+    margin-bottom: 8px;
+}
+
+.appointment-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.appointment-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    position: relative; /* Needed for absolute positioning of the banner */
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+.appointment-details {
+    margin: 5px 0; /* Space between each detail */
+}
+
+.appointment-details strong {
+    margin-right: 5px; /* Space between label and value */
+}
+
+.appointment-actions {
+    display: flex;
+    justify-content: flex-start; /* Align buttons to the right */
+    margin-top: 10px; /* Space above buttons */
+}
+
+.edit-btn, .delete-btn {
+    background-color: #4CAF50; /* Green for edit button */
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 10px; /* Increase space between buttons */
+}
+
+.delete-btn {
+    background-color: #f44336; /* Red for delete button */
+}
+
+.edit-btn:hover, .delete-btn:hover {
+    opacity: 0.8; /* Slightly transparent on hover */
+}
+
+
+/*------------------*/
+/* Basic modal styling */
+.customerEditApp-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+    backdrop-filter: blur(5px); /* Optional blur effect */
+}
+
+/* Modal content */
+.customerEditApp-modal-content {
+    background-color: #fff;
+    margin: 10% auto; /* Center the modal */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%; /* Adjusted width for better responsiveness */
+    max-width: 600px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative; /* Position relative for close button positioning */
+}
+
+/* Close button */
+.customerEditApp-close {
+    color: #aaa;
+    font-size: 24px; /* Adjusted size for better visibility */
+    font-weight: bold;
+    position: absolute; /* Position absolute within modal content */
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.customerEditApp-close:hover,
+.customerEditApp-close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+/* Form styling */
+.customerEditApp-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Gap between form elements */
+}
+
+.customerEditApp-form input,
+.customerEditApp-form select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.customerEditApp-form input:focus,
+.customerEditApp-form select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Calendar grid */
+.customerEditApp-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 columns for days of the week */
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.customerEditApp-calendar-day {
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.customerEditApp-calendar-day.selected {
+    background-color: #8acd2b;
+    color: #fff;
+}
+
+.customerEditApp-calendar-day:hover {
+    background-color: #f1f1f1;
+}
+
+.customerEditApp-calendar-day.disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+
+
+
+/* Time slot grid */
+.customerEditApp-time-slot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Adjust size as needed */
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+/* Time slot styling */
+.customerEditApp-time-slot {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.customerEditApp-time-slot.available {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.customerEditApp-time-slot.unavailable {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.customerEditApp-time-slot.selected {
+    border-color: #8acd2b;
+    background-color: #cce5ff;
+}
+
+
+/* Buttons */
+.customerEditApp-button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.customerEditApp-button:hover {
+    transform: scale(1.05);
+}
+
+.customerEditApp-button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+/* Specific button styles */
+.customerEditApp-save-button {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.customerEditApp-save-button:hover {
+    background-color: #218838;
+}
+
+.customerEditApp-delete-button {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.customerEditApp-delete-button:hover {
+    background-color: #c82333;
+}
+
+/* Base notification styles */
+.customerEditApp-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: white;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    z-index: 1000;
+}
+
+/* Show notification (animation trigger) */
+.customerEditApp-notification.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+/* Success notification style */
+.customerEditApp-notification.success {
+    background-color: #4CAF50; /* Green */
+}
+
+/* Error notification style */
+.customerEditApp-notification.error {
+    background-color: #F44336; /* Red */
+}
+
+/* Optional: Style for other types like warning, info */
+.customerEditApp-notification.warning {
+    background-color: #FF9800; /* Orange */
+}
+
+.customerEditApp-notification.info {
+    background-color: #2196F3; /* Blue */
+}

@@ -13,23 +13,22 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 // Allow specific headers
 header("Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization, X-Requested-With");
-header('Content-Type: application/json');
 
 // Handle OPTIONS method for preflight requests
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit;
 }
 
-error_reporting(E_ALL);
-
 class Appointments {
     private $conn;
     private $table_name = "Appointment";
     private $table_name3 = "Services";
+    private $table_name4 = "Shops";
 
     public function __construct($db) {
         $this->conn = $db;
     }
+
 
     private function getServiceDetails($ServiceCode) {
         $query = "SELECT Description FROM " . $this->table_name3 . " WHERE ServiceCode = :ServiceCode";
@@ -43,7 +42,6 @@ class Appointments {
     public function getAvailableSlots($Date, $ShopID) {
         error_log("Getting available slots for date: " . $Date . " and ShopID: " . $ShopID);
 
-        // Fetch booked slots
         $query = "SELECT Time FROM " . $this->table_name . " WHERE Date = :Date AND ShopID = :ShopID";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':Date', $Date);
@@ -51,7 +49,6 @@ class Appointments {
         $stmt->execute();
         $bookedTimes = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 
-        // Normalize time format to H:i
         $bookedTimes = array_map(function($time) {
             return date('H:i', strtotime($time));
         }, $bookedTimes);
@@ -146,16 +143,16 @@ class Appointments {
         }
     }
 
-    public function update($ShopID, $AppointmentID, $CustomerID, $Date, $Time, $ServiceCode, $CarPlateNumber, $CustomerName, $CustomerEmail) {
+    public function update($ShopID, $AppointmentID, $Date, $Time, $ServiceCode, $CarPlateNumber, $CustomerName, $CustomerEmail) {
         error_log("Update method called with parameters: " . json_encode(func_get_args()));
 
         // Input validation
-        if (!$ShopID || !$AppointmentID || !$CustomerID || !$Date || !$Time || !$ServiceCode) {
+        if (!$ShopID || !$AppointmentID || !$Date || !$Time || !$ServiceCode) {
             return ["success" => false, "message" => "Missing required fields."];
         }
 
         // Get current appointment details
-        $currentAppointment = $this->getAppointmentDetails($AppointmentID, $ShopID, $CustomerID);
+        $currentAppointment = $this->getAppointmentDetailsById($AppointmentID);
         if (!$currentAppointment) {
             return ["success" => false, "message" => "Appointment not found."];
         }
@@ -178,10 +175,11 @@ class Appointments {
             }
         }
 
+        // Prepare the SQL query
         $query = "UPDATE " . $this->table_name . " 
-                  SET Date = :Date, Time = :Time, ServiceCode = :ServiceCode, ServiceDetails = :ServiceDetails, 
-                      CarPlateNumber = :CarPlateNumber, CustomerName = :CustomerName, CustomerEmail = :CustomerEmail
-                  WHERE AppointmentID = :AppointmentID AND CustomerID = :CustomerID AND ShopID = :ShopID";
+              SET Date = :Date, Time = :Time, ServiceCode = :ServiceCode, ServiceDetails = :ServiceDetails, 
+                  CarPlateNumber = :CarPlateNumber, CustomerName = :CustomerName, CustomerEmail = :CustomerEmail
+              WHERE AppointmentID = :AppointmentID AND ShopID = :ShopID";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':Date', $Date);
         $stmt->bindParam(':Time', $Time);
@@ -191,16 +189,16 @@ class Appointments {
         $stmt->bindParam(':CustomerName', $CustomerName);
         $stmt->bindParam(':CustomerEmail', $CustomerEmail);
         $stmt->bindParam(':AppointmentID', $AppointmentID);
-        $stmt->bindParam(':CustomerID', $CustomerID);
         $stmt->bindParam(':ShopID', $ShopID);
 
         try {
             if ($stmt->execute()) {
-                $emailHandler = new MailSender($this->conn);
+                // Send email after successful update
+                $mailSender = new MailSender($this->conn);
                 $emailData = [
                     'appointmentID' => $AppointmentID,
                     'customer_name' => $CustomerName,
-                    'customer_id' => $CustomerID,
+                    'customer_id' => $currentAppointment['CustomerID'],
                     'date' => $Date,
                     'time' => $Time,
                     'service_code' => $ServiceCode,
@@ -209,7 +207,7 @@ class Appointments {
                     'customer_email' => $CustomerEmail
                 ];
 
-                $emailResult = $emailHandler->sendMail($emailData);
+                $emailResult = $mailSender->sendMail($emailData);
                 if ($emailResult['status'] === 'success') {
                     return [
                         "success" => true,
@@ -230,187 +228,134 @@ class Appointments {
                 ];
             }
         } catch (Exception $e) {
-            return [
-                "success" => false,
-                "message" => $e->getMessage()
-            ];
+            error_log("Exception in update method: " . $e->getMessage());
+            return ["success" => false, "message" => $e->getMessage()];
         }
     }
 
-    public function delete($ShopID, $AppointmentID, $CustomerID) {
-        error_log("Delete method called with parameters: " . json_encode(func_get_args()));
 
-        if (!$AppointmentID || !$CustomerID || !$ShopID) {
-            return ["success" => false, "message" => "Missing required fields."];
-        }
-
-        $query = "DELETE FROM " . $this->table_name . " WHERE AppointmentID = :AppointmentID AND CustomerID = :CustomerID AND ShopID = :ShopID";
+    public function delete($AppointmentID ) {
+        $query = "DELETE FROM " . $this->table_name . " WHERE AppointmentID = :AppointmentID";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':AppointmentID', $AppointmentID);
-        $stmt->bindParam(':CustomerID', $CustomerID);
-        $stmt->bindParam(':ShopID', $ShopID);
+
 
         try {
             if ($stmt->execute()) {
-                return ["success" => true, "message" => "Appointment deleted successfully."];
+                return ["message" => "Appointment deleted successfully."];
             } else {
                 $errorInfo = $stmt->errorInfo();
                 error_log("Database error: " . json_encode($errorInfo));
-                return [
-                    "success" => false,
-                    "message" => "Appointment deletion failed. Error code: " . $errorInfo[1]
-                ];
+                return ["message" => "Appointment deletion failed. Error code: " . $errorInfo[1]];
             }
         } catch (Exception $e) {
-            return [
-                "success" => false,
-                "message" => $e->getMessage()
-            ];
+            return ["message" => $e->getMessage()];
         }
     }
+    // New method to fetch all shops
+    public function getAllShops() {
+        $query = "SELECT ShopID, ShopName, Location FROM " . $this->table_name4;
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getAllServiceDetails() {
+        // Modify query to fetch all services with ServiceCode, Name, and Cost
+        $query = "SELECT ServiceCode, ServiceName, Cost FROM " . $this->table_name3;
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
 
-    public function getAppointmentDetails($AppointmentID, $ShopID, $CustomerID) {
-        error_log("Fetching appointment details for AppointmentID: $AppointmentID, ShopID: $ShopID, CustomerID: $CustomerID");
+        // Fetch all results
+        $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $query = "SELECT * FROM " . $this->table_name . " 
-                  WHERE AppointmentID = :AppointmentID AND ShopID = :ShopID AND CustomerID = :CustomerID";
+        // Return the results
+        return $services;
+    }
+
+    public function getAppointmentDetailsById($AppointmentID) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE AppointmentID = :AppointmentID";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':AppointmentID', $AppointmentID);
-        $stmt->bindParam(':ShopID', $ShopID);
-        $stmt->bindParam(':CustomerID', $CustomerID);
         $stmt->execute();
-
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
-    public function getAppointmentsByShop($ShopID) {
-        error_log("Fetching appointments for ShopID: $ShopID");
-
-        if (empty($ShopID)) {
-            return ["success" => false, "message" => "ShopID parameter missing."];
-        }
-
-        $query = "SELECT * FROM " . $this->table_name . " WHERE ShopID = :ShopID";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':ShopID', $ShopID);
-        $stmt->execute();
-
-        $appointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return [
-            "success" => true,
-            "data" => $appointments
-        ];
-    }
-
-    public function getAppointmentsByCustomer($CustomerID) {
-        error_log("Fetching appointments for CustomerID: $CustomerID");
-
-        if (empty($CustomerID)) {
-            return ["success" => false, "message" => "CustomerID parameter missing."];
-        }
-
-        $query = "SELECT * FROM " . $this->table_name . " WHERE CustomerID = :CustomerID";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':CustomerID', $CustomerID);
-        $stmt->execute();
-
-        $appointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return [
-            "success" => true,
-            "data" => $appointments
-        ];
-    }
-
 }
 
-// Instantiate database and appointments object
+// Instantiate DB & connect
 $database = new Database();
 $db = $database->getConnection();
 
+// Instantiate appointments object
 $appointments = new Appointments($db);
 
-// Process the request
-$requestMethod = $_SERVER['REQUEST_METHOD'];
-$data = json_decode(file_get_contents("php://input"), true);
-
-switch ($requestMethod) {
-    case 'POST':
-        // Create appointment
-        if (isset($data['CustomerID'], $data['Date'], $data['Time'], $data['ServiceCode'], $data['ShopID'], $data['CarPlateNumber'], $data['CustomerEmail'], $data['CustomerName'])) {
-            $response = $appointments->create(
-                $data['CustomerID'],
-                $data['Date'],
-                $data['Time'],
-                $data['ServiceCode'],
-                $data['ShopID'],
-                $data['CarPlateNumber'],
-                $data['CustomerEmail'],
-                $data['CustomerName']
-            );
-        } else {
-            $response = ["success" => false, "message" => "Invalid input."];
+// Handle request
+switch ($_SERVER['REQUEST_METHOD']) {
+    case 'GET':
+        if (isset($_GET['allShops'])) {
+            $shops = $appointments->getAllShops();
+            echo json_encode($shops);
+        } elseif (isset($_GET['Date']) && isset($_GET['ShopID'])) {
+            $result = $appointments->getAvailableSlots($_GET['Date'], $_GET['ShopID']);
+            echo json_encode($result);
+        } elseif  (isset($_GET['allServices'])){
+            $services = $appointments -> getAllServiceDetails();
+            echo json_encode($services);
+        }elseif (isset($_GET['AppointmentID'])) {
+            $appointment = $appointments->getAppointmentDetailsById($_GET['AppointmentID']);
+            echo json_encode($appointment);
+        }else {
+            echo json_encode(["message" => "Missing parameters."]);
         }
+        break;
+
+    case 'POST':
+        $input = json_decode(file_get_contents("php://input"), true);
+        $result = $appointments->create(
+            isset($input['CustomerID']) ? $input['CustomerID'] : null,
+            $input['Date'],
+            $input['Time'],
+            $input['ServiceCode'],
+            $input['ShopID'],
+            isset($input['CarPlateNumber']) ? $input['CarPlateNumber'] : null,
+            $input['CustomerEmail'],
+            $input['CustomerName']
+        );
+        echo json_encode($result);
         break;
 
     case 'PUT':
-        // Update appointment
-        if (isset($data['ShopID'], $data['AppointmentID'], $data['CustomerID'], $data['Date'], $data['Time'], $data['ServiceCode'], $data['CarPlateNumber'], $data['CustomerName'], $data['CustomerEmail'])) {
-            $response = $appointments->update(
-                $data['ShopID'],
-                $data['AppointmentID'],
-                $data['CustomerID'],
-                $data['Date'],
-                $data['Time'],
-                $data['ServiceCode'],
-                $data['CarPlateNumber'],
-                $data['CustomerName'],
-                $data['CustomerEmail']
-            );
-        } else {
-            $response = ["success" => false, "message" => "Invalid input."];
+        // Parse input data
+        $input = file_get_contents("php://input");
+        $data = json_decode($input, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            echo json_encode(["success" => false, "message" => "Invalid JSON input."]);
+            exit;
         }
+
+        $result = $appointments->update(
+            $data['ShopID'],
+            $data['AppointmentID'],
+            $data['Date'],
+            $data['Time'],
+            $data['ServiceCode'],
+            $data['CarPlateNumber'],
+            $data['CustomerName'],
+            $data['CustomerEmail']
+        );
+        echo json_encode($result);
         break;
 
     case 'DELETE':
-        // Delete appointment
-        if (isset($data['ShopID'], $data['AppointmentID'], $data['CustomerID'])) {
-            $response = $appointments->delete(
-                $data['ShopID'],
-                $data['AppointmentID'],
-                $data['CustomerID']
-            );
-        } else {
-            $response = ["success" => false, "message" => "Invalid input."];
-        }
-        break;
-
-    case 'GET':
-        // Check for the presence of any of the required parameters
-        $response = [];
-
         if (isset($_GET['AppointmentID'])) {
-            // Fetch appointment by AppointmentID
-            $response = $appointments->getAppointmentByID($_GET['AppointmentID']);
-        } elseif (isset($_GET['ShopID'])) {
-            // Fetch appointments by ShopID
-            $response = $appointments->getAppointmentsByShop($_GET['ShopID']);
-        } elseif (isset($_GET['CustomerID'])) {
-            // Fetch appointments by CustomerID
-            $response = $appointments->getAppointmentsByCustomer($_GET['CustomerID']);
+            $result = $appointments->delete($_GET['AppointmentID']);
+            echo json_encode($result);
         } else {
-            // Return an error if no valid parameter is provided
-            $response = ["success" => false, "message" => "No valid parameter provided."];
+            echo json_encode(["message" => "Missing parameters."]);
         }
         break;
 
     default:
-        $response = ["success" => false, "message" => "Request method not allowed."];
+        echo json_encode(["message" => "Invalid request method."]);
         break;
-
 }
-
-// Set content type header
-header('Content-Type: application/json');
-// Output the response
-echo json_encode($response);
-exit();

@@ -1,4 +1,5 @@
-/*const showModal = (type) => {
+// Define showModal function at a higher scope
+const showModal = (type) => {
   const dialog = document.getElementById(type);
   if (dialog) {
     console.log(`Opening modal: ${type}`);
@@ -14,57 +15,24 @@
 
       if (!isInDialog) {
         dialog.close();
-        dialog.removeEventListener("click", handleOutsideClick);
         console.log(`Closing modal: ${type}`);
       }
     };
 
-    setTimeout(() => {
-      dialog.addEventListener("click", handleOutsideClick);
-    }, 0);
+    // Attach outside click event
+    dialog.addEventListener("click", handleOutsideClick);
   } else {
     console.error(`Element with id ${type} not found.`);
   }
 };
-//------------------------------------------------------------------------------------------
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const loginForm = document.getElementById('loginForm');
   const signupForm = document.getElementById('signupForm');
 
-  // Function to open modal
-  const showModal = (type) => {
-    const dialog = document.getElementById(type);
-    if (dialog) {
-      console.log(`Opening modal: ${type}`);
-      dialog.showModal();
-
-      const handleOutsideClick = (event) => {
-        const rect = dialog.getBoundingClientRect();
-        const isInDialog =
-            rect.top <= event.clientY &&
-            event.clientY <= rect.bottom &&
-            rect.left <= event.clientX &&
-            event.clientX <= rect.right;
-
-        if (!isInDialog) {
-          dialog.close();
-          dialog.removeEventListener("click", handleOutsideClick);
-          console.log(`Closing modal: ${type}`);
-        }
-      };
-
-      setTimeout(() => {
-        dialog.addEventListener("click", handleOutsideClick);
-      }, 0);
-    } else {
-      console.error(`Element with id ${type} not found.`);
-    }
-  };
-
   // Handle login form submission
   if (loginForm) {
-    loginForm.addEventListener('submit', function(event) {
+    loginForm.addEventListener('submit', function (event) {
       event.preventDefault();
 
       const email = document.getElementById('login-email').value.trim();
@@ -75,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
 
-      fetch('http://localhost:8888/VehicleRepairSystem/vehicle-repair-shop/src/api/auth.php?action=login', {
+      fetch('http://localhost:8888/WDI/WDI-VehicleRepairShop/src/api/auth.php?action=login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,9 +53,13 @@ document.addEventListener('DOMContentLoaded', function() {
           .then(response => response.json())
           .then(data => {
             if (data.success) {
+              // Store user data in local storage
+              localStorage.setItem('user', JSON.stringify(data.user));
+
               showUploadingMessage();
               setTimeout(() => {
-                window.location.href = '../profile.html'; // Replace with your profile page URL
+                console.log("Login successful, redirecting...");
+                window.location.href = '/WDI/WDI-VehicleRepairShop/public/profile.html'; // Ensure this path is correct
               }, 3000);
             } else {
               alert(data.message);
@@ -97,9 +69,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Handle signup form submission
+  /// Handle signup form submission
   if (signupForm) {
-    signupForm.addEventListener('submit', function(event) {
+    signupForm.addEventListener('submit', function (event) {
       event.preventDefault();
 
       const nameSurname = document.getElementById('signup-name-surname').value.trim();
@@ -112,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
 
-      fetch('http://localhost:8888/VehicleRepairSystem/vehicle-repair-shop/src/api/auth.php?action=register', {
+      fetch('http://localhost:8888/WDI/WDI-VehicleRepairShop/src/api/auth.php?action=register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -122,9 +94,21 @@ document.addEventListener('DOMContentLoaded', function() {
           .then(response => response.json())
           .then(data => {
             if (data.success) {
+              // Optionally store user data in local storage
+              localStorage.setItem('user', JSON.stringify(data.user));
+
               showSuccessMessage();
+
+
               setTimeout(() => {
-                window.location.href = 'userLogin.html';
+                console.log("Signup successful, redirecting to login modal...");
+                // Close the signup modal if needed
+                const signupDialog = document.getElementById('sign-up');
+                if (signupDialog) {
+                  signupDialog.close();
+                }
+                // Open the login modal
+                showModal('login');
               }, 3000);
             } else {
               alert(data.message);
@@ -134,13 +118,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+
   // Show uploading message for login
   function showUploadingMessage() {
     const formContainer = document.querySelector(".login") || document.querySelector(".form-container-signup");
     if (formContainer) {
       formContainer.innerHTML = `
-              <h1 style="text-align: center;">Uploading<span id="dots"></span></h1>
-            `;
+        <h1 style="text-align: center;">Uploading<span id="dots"></span></h1>
+      `;
       animateDots();
     } else {
       console.error('Form container not found.');
@@ -151,8 +136,8 @@ document.addEventListener('DOMContentLoaded', function() {
   function showSuccessMessage() {
     const successMessage = document.createElement('div');
     successMessage.innerHTML = `
-            <h1 style="text-align: center;">Signup Successful!<br>Redirecting...</h1>
-        `;
+      <h1 style="text-align: center;">Signup Successful!<br>Redirecting...</h1>
+    `;
     document.body.appendChild(successMessage);
   }
 
@@ -173,65 +158,4 @@ document.addEventListener('DOMContentLoaded', function() {
   // Attach event listeners to buttons
   document.getElementById('loginButton').addEventListener('click', () => showModal('login'));
   document.getElementById('signupButton').addEventListener('click', () => showModal('sign-up'));
-
-  document.addEventListener('DOMContentLoaded', function() {
-    const loginButton = document.getElementById('loginButton');
-    const signupButton = document.getElementById('signupButton');
-
-    console.log('Login Button:', loginButton); // Check if the button is found
-    console.log('Signup Button:', signupButton); // Check if the button is found
-
-    if (loginButton) {
-      loginButton.addEventListener('click', () => showModal('login'));
-    } else {
-      console.error('Login button not found');
-    }
-
-    if (signupButton) {
-      signupButton.addEventListener('click', () => showModal('sign-up'));
-    } else {
-      console.error('Signup button not found');
-    }
-
-    function showModal(type) {
-      const dialog = document.getElementById(type);
-      if (dialog) {
-        console.log(`Opening modal: ${type}`);
-        dialog.showModal();
-      } else {
-        console.error(`Element with id ${type} not found.`);
-      }
-    }
-  });
-
 });
-
-
-
-//-------------------------------------------------------------------------------------------
-
-/*function showUploadingMessage() {
-  const formContainer = document.querySelector(".login-container") || document.querySelector(".form-container-signup");
-  if (formContainer) {
-    formContainer.innerHTML = `
-      <h1 style="text-align: center;">Uploading<span id="dots"></span></h1>
-    `;
-    animateDots();
-  } else {
-    console.error('Form container not found.');
-  }
-}
-
-function animateDots() {
-  const dots = document.getElementById("dots");
-  if (dots) {
-    let dotCount = 0;
-    setInterval(() => {
-      dotCount = (dotCount + 1) % 4;
-      dots.textContent = ".".repeat(dotCount);
-    }, 500);
-  } else {
-    console.error('Element with id "dots" not found.');
-  }
-}*/
-

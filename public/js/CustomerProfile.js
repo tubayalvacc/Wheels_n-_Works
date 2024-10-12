@@ -1101,16 +1101,22 @@ async function loadProfileDetails() {
     }
 }
 
-document.getElementById('logoutBtn').addEventListener('click', function(event) {
-    event.preventDefault();
+const logoutBtn = document.getElementById('logoutBtn');
 
-    // Simulate logout process
-    localStorage.removeItem('user'); // Remove user details from local storage (assuming you store it here)
-    sessionStorage.removeItem('token'); // Remove authentication token (if stored in sessionStorage)
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default action (if it's a link)
 
-    // Redirect to login page after logout
-    window.location.href = '../WDI/WDI-VehicleRepairShop/public/index.html';
-});
+        console.log("Logout button clicked."); // Debugging log
+
+        // Simulate logout process
+        localStorage.removeItem('user'); // Remove user details from local storage
+        sessionStorage.removeItem('token'); // Remove authentication token
+
+        // Redirect to the main page after logout
+        window.location.href = 'index.html'; // Adjust path if necessary
+    });
+}
 
 
 /*async function fetchCarBrands() {

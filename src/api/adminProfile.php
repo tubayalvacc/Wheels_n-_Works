@@ -1,148 +1,106 @@
 <?php
+// Include necessary files and libraries
+require_once '../config/database.php'; // Adjust path if necessary
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, PUT");
+header("Access-Control-Allow-Headers: Content-Type");
+header('Content-Type: application/json');
 ini_set('display_errors', 1);
-ini_set('display_errors', '0');
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once '../config/database.php';
-require_once '../utils/functions.php';
-
-
-header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, PUT, DELETE, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-
-// Handle OPTIONS request
+// Handle OPTIONS method for preflight requests
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit;
 }
 
-
-class ShopOwner {
+class Profile {
     private $conn;
-    private $table_name = "ShopOwners";
-    private $table_name2 = "Shops";
+    private $owner_table = "ShopOwner";
+    private $shop_table = "Shops";
 
     public function __construct($db) {
         $this->conn = $db;
     }
 
-    public function getProfile($ownerID) {
-        $query = "SELECT o.OwnerID, o.Name, o.ContactInfo, o.ShopID, o.Username, o.email, s.ShopName, s.Location
-              FROM " . $this->table_name . " o
-              LEFT JOIN " . $this->table_name2 . " s ON o.ShopID = s.ShopID
-              WHERE o.OwnerID = :ownerID";
+    public function getProfileDetails($owner_id) {
+        // Fetch user details
+        $query = "SELECT * FROM " . $this->owner_table . " WHERE OwnerID = :owner_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':ownerID', $ownerID);
+        $stmt->bindParam(':owner_id', $owner_id);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
 
-        if (!$stmt->execute()) {
-            throw new Exception("Error executing query: " . implode(", ", $stmt->errorInfo()));
+        // If user not found, return an error response
+        if (!$user) {
+            return ['message' => 'User not found'];
         }
 
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$result) {
-            return null;
-        }
-        return $result;
+        // Fetch shop details
+        $query = "SELECT * FROM " . $this->shop_table . " WHERE ShopID = :shop_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':shop_id', $user['ShopID']);
+        $stmt->execute();
+        $shop = $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+
+        return [
+            'user' => $user,
+            'shop' => $shop
+        ];
     }
 
-
-    public function updateProfile($ownerID, $name, $contactInfo, $username, $email, $password = null) {
-        $query = "UPDATE " . $this->table_name . " SET 
-                  Name = :name, 
-                  ContactInfo = :contactInfo, 
-                  Username = :username, 
-                  email = :email";
-
-        if ($password) {
-            $query .= ", Password = :password";
-        }
-
-        $query .= " WHERE OwnerID = :ownerID";
-
+    public function updateProfileDetails($owner_id, $user_data, $shop_data) {
+        // Update user details
+        $query = "UPDATE " . $this->owner_table . " SET Name = :name, ContactInfo = :contactInfo, Username = :username, Email = :email WHERE OwnerID = :owner_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':contactInfo', $contactInfo);
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':ownerID', $ownerID);
+        $stmt->bindParam(':name', $user_data['Name']);
+        $stmt->bindParam(':contactInfo', $user_data['ContactInfo']);
+        $stmt->bindParam(':username', $user_data['Username']);
+        $stmt->bindParam(':email', $user_data['Email']);
+        $stmt->bindParam(':owner_id', $owner_id);
+        $stmt->execute();
 
-        if ($password) {
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $stmt->bindParam(':password', $hashed_password);
-        }
-
-        return $stmt->execute();
-    }
-
-    public function deleteProfile($ownerID) {
-        $query = "DELETE FROM " . $this->table_name . " WHERE OwnerID = :ownerID";
+        // Update shop details
+        $query = "UPDATE " . $this->shop_table . " SET ShopName = :shopName, Location = :location, ContactNumber = :contactNumber, Email = :email WHERE ShopID = :shop_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':ownerID', $ownerID);
-        return $stmt->execute();
+        $stmt->bindParam(':shopName', $shop_data['ShopName']);
+        $stmt->bindParam(':location', $shop_data['Location']);
+        $stmt->bindParam(':contactNumber', $shop_data['ContactNumber']);
+        $stmt->bindParam(':email', $shop_data['Email']);
+        $stmt->bindParam(':shop_id', $user_data['ShopID']);
+        $stmt->execute();
+
+        return ['message' => 'Profile updated successfully'];
     }
 }
 
+// Create Database and Profile object
 $database = new Database();
 $db = $database->getConnection();
-$shopOwner = new ShopOwner($db);
+$profile = new Profile($db);
 
-$headers = getallheaders();
-$ownerID = isset($headers['Authorization']) ? str_replace('OwnerID ', '', $headers['Authorization']) : '';
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['owner_id'])) {
+    $owner_id = $_GET['owner_id'];
+    $data = $profile->getProfileDetails($owner_id);
 
-if (empty($ownerID)) {
-    http_response_code(401);
-    echo json_encode(['message' => 'OwnerID is required.']);
-    exit();
+    if (!$data || empty($data['user'])) {
+        echo json_encode(['error' => 'Profile not found or empty data']);
+        exit;
+    }
+
+    echo json_encode($data);
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    try {
-        $profile = $shopOwner->getProfile($ownerID);
-        if ($profile) {
-            echo json_encode($profile);
-        } else {
-            http_response_code(404);
-            echo json_encode(["message" => "Profile not found"]);
-        }
-    } catch (Exception $e) {
-        http_response_code(500);
-        echo json_encode(["message" => $e->getMessage()]);
-    }
-} elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-    $input = json_decode(file_get_contents('php://input'), true);
 
-    // Use ternary operator for backward compatibility
-    $name = isset($input['Name']) ? filter_var($input['Name'], FILTER_SANITIZE_STRING) : '';
-    $contactInfo = isset($input['ContactInfo']) ? filter_var($input['ContactInfo'], FILTER_SANITIZE_STRING) : '';
-    $username = isset($input['Username']) ? filter_var($input['Username'], FILTER_SANITIZE_STRING) : '';
-    $email = isset($input['email']) ? filter_var($input['email'], FILTER_VALIDATE_EMAIL) : '';
-    $password = isset($input['Password']) ? $input['Password'] : null;
+// Handle PUT request
+if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    // Parse input JSON data
+    $input = json_decode(file_get_contents("php://input"), true);
+    $owner_id = $input['owner_id'];
+    $user_data = $input['user'];
+    $shop_data = $input['shop'];
 
-    if (!$name || !$contactInfo || !$username || !$email) {
-        http_response_code(400);
-        echo json_encode(["message" => "Name, ContactInfo, Username, and Email are required and must be valid"]);
-        exit();
-    }
-
-    try {
-        if ($shopOwner->updateProfile($ownerID, $name, $contactInfo, $username, $email, $password)) {
-            echo json_encode(["message" => "Profile updated successfully"]);
-        } else {
-            http_response_code(500);
-            echo json_encode(["message" => "Failed to update profile"]);
-        }
-    } catch (Exception $e) {
-        http_response_code(500);
-        echo json_encode(["message" => $e->getMessage()]);
-    }
-
-} elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-    if ($shopOwner->deleteProfile($ownerID)) {
-        echo json_encode(["message" => "Profile deleted successfully"]);
-    } else {
-        http_response_code(500);
-        echo json_encode(["message" => "Failed to delete profile"]);
-    }
+    $response = $profile->updateProfileDetails($owner_id, $user_data, $shop_data);
+    echo json_encode($response);
 }

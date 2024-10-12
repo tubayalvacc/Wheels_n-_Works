@@ -1,139 +1,147 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Set up click event listeners for menu items
-    document.querySelectorAll('.sidebar ul li').forEach(function(menuItem) {
-        menuItem.addEventListener('click', function() {
-            // Remove 'active' class from all menu items
-            document.querySelectorAll('.sidebar ul li').forEach(function(item) {
-                item.classList.remove('active');
-            });
 
-            // Hide all sections
-            document.querySelectorAll('.content > section').forEach(function(section) {
-                section.style.display = 'none';
-            });
+// adminProfile.js
 
-            // Add 'active' class to the clicked menu item
-            menuItem.classList.add('active');
+let ownerId;
 
-            // Show the section corresponding to the clicked menu item
-            const sectionId = menuItem.getAttribute('data-section');
-            document.getElementById(sectionId).style.display = 'block';
-        });
-    });
+window.onload = () => {
+    ownerId = localStorage.getItem('adminId');
+    if (!ownerId) {
+        console.error('Owner ID is missing in local storage.');
+        return;
+    }
 
-    // Optionally, you can trigger a click on the first menu item to show the default section
-    document.querySelector('.sidebar ul li.active').click();
+    fetchProfile();
+    fetchShop();
+};
 
+// Fetch Profile Information
+async function fetchProfile() {
+    const response = await fetch(`http://localhost:8888/WDI/WDI-VehicleRepairShop/src/api/adminProfile.php?owner_id=${ownerId}`);
 
-});
+    if (!response.ok) {
+        console.error('Failed to fetch profile:', response.statusText);
+        return;
+    }
 
-//---------------------PROFILE----------------
+    const text = await response.text();
+    if (!text) {
+        console.error('Empty response for profile');
+        return;
+    }
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('edit-profile-button').addEventListener('click', enableProfileEditing);
-    document.getElementById('save-profile-button').addEventListener('click', saveProfileChanges);
-    fetchProfileInfo();
-});
-
-function fetchProfileInfo() {
-    // Simulating API call
-    fetch('http://localhost:8888/VehicleRepairSystem/vehicle-repair-shop/src/api/adminProfile.php', {
-        method: 'GET',
-        headers: {
-            'Authorization': 'OwnerID 1181903'
+    try {
+        const data = JSON.parse(text);
+        if (data.error) {
+            console.error('Error in response:', data.error);
+            return;
         }
-    })
-        .then(response => response.json())
-        .then(data => {
-            displayProfileInfo(data);
-        })
-        .catch(error => {
-            console.error('Error fetching profile:', error);
-            alert('Failed to load profile information. Please try again later.');
-        });
-}
-
-function displayProfileInfo(data) {
-    document.getElementById('owner-id').textContent = data.OwnerID || 'N/A';
-    document.getElementById('profile-shop-id').textContent = data.ShopID || 'N/A';
-    document.getElementById('name-display').textContent = data.Name || 'N/A';
-    document.getElementById('contact-info-display').textContent = data.ContactInfo || 'N/A';
-    document.getElementById('username-display').textContent = data.Username || 'N/A';
-    document.getElementById('profile-email-display').textContent = data.email || 'N/A';
-}
-
-function enableProfileEditing() {
-    console.log('Edit button clicked');
-
-    const fields = ['name', 'contact-info', 'username', 'email'];
-    const idMap = {
-        'name': 'name-display',
-        'contact-info': 'contact-info-display',
-        'username': 'username-display',
-        'email': 'profile-email-display'
-    };
-
-    fields.forEach(field => {
-        const displayElement = document.getElementById(idMap[field]);
-        if (displayElement) {
-            const currentValue = displayElement.textContent.trim();
-            displayElement.innerHTML = `<input type="${field === 'email' ? 'email' : 'text'}" id="${field}-input" value="${currentValue === 'N/A' ? '' : currentValue}">`;
-        } else {
-            console.error(`Element with ID ${idMap[field]} not found`);
-        }
-    });
-
-    toggleButtonVisibility('edit-profile-button', 'none');
-    toggleButtonVisibility('save-profile-button', 'inline-block');
-}
-
-function toggleButtonVisibility(buttonId, displayStyle) {
-    const button = document.getElementById(buttonId);
-    if (button) {
-        button.style.display = displayStyle;
-    } else {
-        console.error(`Button with ID ${buttonId} not found`);
+        document.getElementById('owner-id').textContent = data.user.OwnerID || 'N/A';
+        document.getElementById('profile-shop-id').textContent = data.user.ShopID || 'N/A';
+        document.getElementById('name-display').textContent = data.user.Name || 'N/A';
+        document.getElementById('contact-info-display').textContent = data.user.ContactInfo || 'N/A';
+        document.getElementById('username-display').textContent = data.user.Username || 'N/A';
+        document.getElementById('profile-email-display').textContent = data.user.email || 'N/A';
+    } catch (error) {
+        console.error('Failed to parse JSON:', error);
     }
 }
 
+// Fetch Shop Information
+async function fetchShop() {
+    const response = await fetch(`http://localhost:8888/WDI/WDI-VehicleRepairShop/src/api/adminProfile.php?owner_id=${ownerId}`);
 
-function saveProfileChanges() {
-    const updatedData = {
-        Name: document.getElementById('name-input')?.value,
-        ContactInfo: document.getElementById('contact-info-input')?.value,
-        Username: document.getElementById('username-input')?.value,
-        email: document.getElementById('email-input')?.value
+    if (!response.ok) {
+        console.error('Failed to fetch shop:', response.statusText);
+        return;
+    }
+
+    const text = await response.text();
+    if (!text) {
+        console.error('Empty response for shop');
+        return;
+    }
+
+    try {
+        const data = JSON.parse(text);
+        document.getElementById('shopID').textContent = data.shop.ShopID || 'N/A';
+        document.getElementById('shop-name-display').textContent = data.shop.ShopName || 'N/A';
+        document.getElementById('shop-location-display').textContent = data.shop.Location || 'N/A';
+        document.getElementById('shop-contact-display').textContent = data.shop.ContactNumber || 'N/A';
+        document.getElementById('email-display').textContent = data.shop.Email || 'N/A';
+    } catch (error) {
+        console.error('Failed to parse JSON:', error);
+    }
+}
+
+// Save Profile Changes
+async function saveProfile() {
+    const updatedProfile = {
+        type: 'profile',
+        name: document.getElementById('name-display').textContent,
+        contactInfo: document.getElementById('contact-info-display').textContent,
+        username: document.getElementById('username-display').textContent,
+        email: document.getElementById('profile-email-display').textContent
     };
 
-    console.log('Request payload:', JSON.stringify(updatedData));
-
-    fetch('http://localhost:8888/VehicleRepairSystem/vehicle-repair-shop/src/api/adminProfile.php', {
+    const response = await fetch('http://localhost:8888/WDI/WDI-VehicleRepairShop/src/api/adminProfile.php', {
         method: 'PUT',
         headers: {
-            'Authorization': 'OwnerID 1181903',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify(updatedData)
-    })
-        .then(response => response.text())  // Get the response as text
-        .then(text => {
-            console.log('Full server response:', text);
-            // Try to parse as JSON if it looks like JSON
-            if (text.trim().startsWith('{')) {
-                return JSON.parse(text);
-            } else {
-                throw new Error('Server returned non-JSON response: ' + text);
-            }
-        })
-        .then(data => {
-            console.log('Success:', data);
-            alert(data.message);
-            fetchProfileInfo();
-            document.getElementById('edit-profile-button').style.display = 'inline-block';
-            document.getElementById('save-profile-button').style.display = 'none';
-        })
-        .catch(error => {
-            console.error('Error updating profile:', error);
-            alert('Failed to update profile. Please check the console for more details.');
-        });
+        body: new URLSearchParams(updatedProfile)
+    });
+
+    const result = await response.json();
+    alert(result.message);
 }
+
+// Save Shop Changes
+async function saveShop() {
+    const updatedShop = {
+        type: 'shop',
+        shopName: document.getElementById('shop-name-display').textContent,
+        location: document.getElementById('shop-location-display').textContent,
+        contactNumber: document.getElementById('shop-contact-display').textContent,
+        email: document.getElementById('email-display').textContent
+    };
+
+    const response = await fetch('http://localhost:8888/WDI/WDI-VehicleRepairShop/src/api/adminProfile.php', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(updatedShop)
+    });
+
+    const result = await response.json();
+    alert(result.message);
+}
+
+// Bind buttons to save functions
+document.getElementById('save-profile-button').onclick = saveProfile;
+document.getElementById('save-shop-button').onclick = saveShop;
+
+// Sidebar navigation
+document.addEventListener("DOMContentLoaded", function() {
+    const sidebarItems = document.querySelectorAll('.sidebar ul li');
+    const sections = document.querySelectorAll('main section');
+
+    sidebarItems.forEach(item => {
+        item.addEventListener('click', () => {
+            // Hide all sections
+            sections.forEach(section => {
+                section.style.display = 'none';
+                section.classList.remove('active');
+            });
+
+            // Show the clicked section
+            const sectionId = item.getAttribute('data-section');
+            document.getElementById(sectionId).style.display = 'block';
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update active item in sidebar
+            sidebarItems.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+        });
+    });
+});

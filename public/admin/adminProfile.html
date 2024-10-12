@@ -38,11 +38,13 @@
                     <li data-section="reviews-ratings">Reviews & Ratings</li>
                     <li data-section="social-media">Social Media</li>
                     <li data-section="map-location">Map Location</li>
+                    <button id="logout-button" class="logout-button">Logout</button>
                 </ul>
             </aside>
 
             <!-- Main Content Area -->
             <main class="content">
+
                 <!-- Profile Information -->
                 <section id="profile-info" class="active">
                     <div class="profile-details">
@@ -74,56 +76,69 @@
                     <button id="save-shop-button" class="save-button" style="display:none;">Save Changes</button>
                 </section>
 
-                <section id="appointments" class="appointments-section active" style="display: none">
+
+                <!-- Appointment Details -->
+                <section id="appointments" class="adminApp-appointments-section active" style="display: none">
                     <h2>Appointments</h2>
-                    <div id="appointments-list" class="appointments-list">
+                    <div id="appointments-list" class="adminApp-appointments-list">
                         <!-- Example appointment entry -->
-                        <div class="appointment-item">
-                            <button class="edit-app-btn" data-appointment-id="${appointment.AppointmentID}" data-customer-id="${appointment.CustomerID}">Edit</button>
+                        <div class="adminApp-appointment-item">
+                            <button class="adminApp-edit-app-btn" data-appointment-id="${appointment.AppointmentID}" data-customer-id="${appointment.CustomerID}">Edit</button>
                         </div>
                     </div>
                 </section>
 
                 <!-- Modal Structure -->
                 <div id="editAppointmentModal" class="modal">
-                    <input type="hidden" id="modal-shopId" />
-
                     <div class="modal-content">
-                        <span class="close-btn">&times;</span>
+                        <span class="adminApp-close-btn">&times;</span>
                         <h2>Edit Appointment</h2>
-                        <form id="editForm">
-                            <input type="hidden" id="modal-appointmentId">
-                            <input type="hidden" id="modal-customerId">
-
-                            <label for="modal-date">Date:</label>
-                            <input type="date" id="modal-date" name="date" required>
-
-                            <label for="modal-time">Available Slots:</label>
-                            <select id="modal-time" name="time" required>
-                                <option value="">Select a time slot</option>
-                            </select>
-
-                            <select id="modal-serviceCode" name="serviceCode">
-                                <!-- Options will be populated dynamically -->
-                            </select>
-
-
-                            <label for="modal-carPlateNumber">Car Plate Number:</label>
-                            <input type="text" id="modal-carPlateNumber" name="carPlateNumber" required>
-
-                            <label for="modal-customerName">Customer Name:</label>
-                            <input type="text" id="modal-customerName" name="customerName" required>
-
-                            <label for="modal-customerEmail">Customer Email:</label>
-                            <input type="email" id="modal-customerEmail" name="customerEmail" required>
-
-                            <button type="button" id="updateButton">Update Appointment</button>
-                        </form>
+                        <div class="modal-body">
+                            <form class="appointment-form">
+                                <input type="hidden" id="adminApp-modal-appointmentId">
+                                <input type="hidden" id="adminApp-modal-customerId">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="adminApp-modal-date">Select Date:</label>
+                                        <input type="date" id="adminApp-modal-date" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="adminApp-modal-time">Time:</label>
+                                        <input type="text" id="adminApp-modal-time" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="adminApp-modal-serviceCode">Service Code:</label>
+                                        <input type="text" id="adminApp-modal-serviceCode" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="adminApp-modal-carPlateNumber">Car Plate Number:</label>
+                                        <input type="text" id="adminApp-modal-carPlateNumber" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="adminApp-modal-customerName">Customer Name:</label>
+                                        <input type="text" id="adminApp-modal-customerName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="adminApp-modal-customerEmail">Customer Email:</label>
+                                        <input type="email" id="adminApp-modal-customerEmail" required>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="slots-section">
+                                <h3>Available Slots</h3>
+                                <div id="available-slots-list">
+                                    <!-- List of available slots will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="adminApp-updateButton">Update Appointment</button>
+                        </div>
                     </div>
                 </div>
 
 
-                <section id="invoice-details" style="display: none">
+                    <section id="invoice-details" style="display: none">
                     <h2>Invoices</h2>
                     <p>Invoices content goes here...</p>
 
@@ -194,6 +209,7 @@
         </div>
     </div>
 </div>
+<div id="notification" class="notification"></div>
 
 <script src="../js/adminProfile.js"></script>
 <script src="../js/adminPShops.js"></script>

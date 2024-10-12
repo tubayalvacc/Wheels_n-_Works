@@ -1,3 +1,26 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('loginForm');
+    const messageDiv = document.getElementById('message');
+    const loadingDots = document.getElementById('loadingDots');
+
+    // Existing login code...
+
+    // Logout functionality
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            // Clear localStorage
+            localStorage.removeItem('adminEmail');
+            localStorage.removeItem('adminId');
+            localStorage.removeItem('shopId');
+
+            // Redirect to login page
+            window.location.href = '../admin/adminLogin.html'; // Change this to the correct login page URL
+        });
+    }
+
+    // Remaining existing code...
+});
 
 // adminProfile.js
 

@@ -151,7 +151,16 @@ class Appointments {
 
         // Input validation
         if (!$ShopID || !$AppointmentID || !$CustomerID || !$Date || !$Time || !$ServiceCode) {
-            return ["success" => false, "message" => "Missing required fields."];
+            $missingFields = [];
+            if (!$ShopID) $missingFields[] = 'ShopID';
+            if (!$AppointmentID) $missingFields[] = 'AppointmentID';
+            if (!$CustomerID) $missingFields[] = 'CustomerID';
+            if (!$Date) $missingFields[] = 'Date';
+            if (!$Time) $missingFields[] = 'Time';
+            if (!$ServiceCode) $missingFields[] = 'ServiceCode';
+
+            error_log("Missing required fields: " . implode(", ", $missingFields));
+            return ["success" => false, "message" => "Missing required fields: " . implode(", ", $missingFields)];
         }
 
         // Get current appointment details
@@ -162,7 +171,10 @@ class Appointments {
         error_log("Current appointment details: " . json_encode($currentAppointment));
 
         $ServiceDetails = $this->getServiceDetails($ServiceCode);
-        error_log("Service Details: " . $ServiceDetails);
+        if (!$ServiceDetails) {
+            return ["success" => false, "message" => "Service details not found."];
+        }
+        error_log("Service Details: " . json_encode($ServiceDetails));
 
         // Check availability only if date or time is changing
         if ($Date != $currentAppointment['Date'] || $Time != $currentAppointment['Time']) {
@@ -179,9 +191,9 @@ class Appointments {
         }
 
         $query = "UPDATE " . $this->table_name . " 
-                  SET Date = :Date, Time = :Time, ServiceCode = :ServiceCode, ServiceDetails = :ServiceDetails, 
-                      CarPlateNumber = :CarPlateNumber, CustomerName = :CustomerName, CustomerEmail = :CustomerEmail
-                  WHERE AppointmentID = :AppointmentID AND CustomerID = :CustomerID AND ShopID = :ShopID";
+              SET Date = :Date, Time = :Time, ServiceCode = :ServiceCode, ServiceDetails = :ServiceDetails, 
+                  CarPlateNumber = :CarPlateNumber, CustomerName = :CustomerName, CustomerEmail = :CustomerEmail
+              WHERE AppointmentID = :AppointmentID AND CustomerID = :CustomerID AND ShopID = :ShopID";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':Date', $Date);
         $stmt->bindParam(':Time', $Time);
@@ -226,13 +238,14 @@ class Appointments {
                 error_log("Database error: " . json_encode($errorInfo));
                 return [
                     "success" => false,
-                    "message" => "Appointment update failed. Error code: " . $errorInfo[1]
+                    "message" => "Appointment update failed. Error code: " . $errorInfo[1] . ", message: " . $errorInfo[2]
                 ];
             }
         } catch (Exception $e) {
+            error_log("Exception occurred: " . $e->getMessage());
             return [
                 "success" => false,
-                "message" => $e->getMessage()
+                "message" => "An error occurred: " . $e->getMessage()
             ];
         }
     }
@@ -270,18 +283,28 @@ class Appointments {
     }
 
     public function getAppointmentDetails($AppointmentID, $ShopID, $CustomerID) {
-        error_log("Fetching appointment details for AppointmentID: $AppointmentID, ShopID: $ShopID, CustomerID: $CustomerID");
-
-        $query = "SELECT * FROM " . $this->table_name . " 
-                  WHERE AppointmentID = :AppointmentID AND ShopID = :ShopID AND CustomerID = :CustomerID";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE AppointmentID = :AppointmentID AND ShopID = :ShopID AND CustomerID = :CustomerID";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':AppointmentID', $AppointmentID);
         $stmt->bindParam(':ShopID', $ShopID);
         $stmt->bindParam(':CustomerID', $CustomerID);
+
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC); // Adjust as needed based on your database structure
+    }
+
+    public function getAppointmentById($AppointmentID) {
+        error_log("Fetching appointment details for AppointmentID: $AppointmentID");
+
+        $query = "SELECT * FROM " . $this->table_name . " 
+              WHERE AppointmentID = :AppointmentID";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':AppointmentID', $AppointmentID);
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
 
     public function getAppointmentsByShop($ShopID) {
         error_log("Fetching appointments for ShopID: $ShopID");
@@ -385,12 +408,16 @@ switch ($requestMethod) {
         break;
 
     case 'GET':
-        // Check for the presence of any of the required parameters
         $response = [];
 
         if (isset($_GET['AppointmentID'])) {
             // Fetch appointment by AppointmentID
-            $response = $appointments->getAppointmentByID($_GET['AppointmentID']);
+            $response = $appointments->getAppointmentById($_GET['AppointmentID']);
+        } elseif (isset($_GET['ShopID']) && isset($_GET['Date'])) {
+            // Fetch available slots by ShopID and Date
+            $Date = $_GET['Date'];
+            $ShopID = $_GET['ShopID'];
+            $response = $appointments->getAvailableSlots($Date, $ShopID);
         } elseif (isset($_GET['ShopID'])) {
             // Fetch appointments by ShopID
             $response = $appointments->getAppointmentsByShop($_GET['ShopID']);

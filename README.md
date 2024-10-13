@@ -7,8 +7,7 @@ Date:13 October 2024, Sunday
 
 
 ## **Sample Version**
-This document presents a simplified sample version of the "Wheels n’ Works" project. It highlights the essential functionalities and features available to users, including non-customers, customers, shop owners, 
-and super admins. This version serves to illustrate the key components of the system while maintaining a less complex structure.
+This document presents a simplified sample version of the "Wheels n’ Works" project. It highlights the essential functionalities and features available to users, including non-customers, customers and shop owners This version serves to illustrate the key components of the system while maintaining a less complex structure.
 
 
 ![Alt text](/ReadMe/2.png)

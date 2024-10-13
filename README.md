@@ -40,8 +40,9 @@ This document presents a simplified sample version of the "Wheels n’ Works" pr
 - Customers can register and log in to the system, gaining access to various features designed to enhance their experience.
 
 ![Alt text](/ReadMe/3.png)
-
-![Alt text](/ReadMe/6.png)
+![Alt text](/ReadMe/18.png)
+![Alt text](/ReadMe/19.png)
+![Alt text](/ReadMe/14.png)
 ![Alt text](/ReadMe/10.png)
 
 ### Profile Dashboard
@@ -62,6 +63,11 @@ This document presents a simplified sample version of the "Wheels n’ Works" pr
 
 #### Dashboard Access
 - Once approved, shop owners receive login credentials to access their personalized dashboard. Here, they can manage personal and shop details, view appointments, invoices, and available services.
+
+![Alt text](/ReadMe/15.png)
+![Alt text](/ReadMe/16.png)
+![Alt text](/ReadMe/17.png)
+
 
 #### Management Capabilities
 - **Edit Information:** Update personal and shop information as needed.

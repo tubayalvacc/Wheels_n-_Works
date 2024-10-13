@@ -21,7 +21,6 @@ This document presents a simplified sample version of the "Wheels n’ Works" pr
 
 
 ### Appointment Management
-- Each non-customer booking gets a unique appointment ID, making it easier to track and manage appointments.
 - After booking, non-customers receive a confirmation email with their appointment details, including the appointment ID.
 
 ### Updating Appointments
@@ -29,9 +28,6 @@ This document presents a simplified sample version of the "Wheels n’ Works" pr
 
 ### Service Browsing
 - Non-customers can explore available services on the homepage, helping them decide whether to book an appointment. They can also browse different shops and choose one to book with.
-
-### Identification Fields
-- Customer ID, appointment ID, and invoice ID are read-only and cannot be changed by non-customers or customers. This helps maintain consistent identification in the system.
 
 ### Invoiced Appointments
 - Once an appointment is invoiced, non-customers cannot edit or delete it; they can only view the appointment details.

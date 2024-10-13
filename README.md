@@ -17,6 +17,8 @@ This document presents a simplified sample version of the "Wheels n’ Works" pr
 ### Non-Customers
 
 ![Alt text](/ReadMe/4.png)
+![Alt text](/ReadMe/9.png)
+
 
 ### Appointment Management
 - Each non-customer booking gets a unique appointment ID, making it easier to track and manage appointments.
@@ -40,6 +42,7 @@ This document presents a simplified sample version of the "Wheels n’ Works" pr
 ![Alt text](/ReadMe/3.png)
 
 ![Alt text](/ReadMe/6.png)
+![Alt text](/ReadMe/10.png)
 
 ### Profile Dashboard
 - After logging in, customers are directed to their profile dashboard, where they can view and update their personal information, ensuring their details are always current.
@@ -89,6 +92,8 @@ Once invoices are prepared, shop owners can send them to customers via email or 
 Photos
 ![Alt text](/ReadMe/7.png)
 ![Alt text](/ReadMe/8.png)
+![Alt text](/ReadMe/11.png)
+![Alt text](/ReadMe/12.png)
 
 # **Conclusion**
 This sample version of "Wheels n' Works" serves as an illustrative overview of the system's capabilities, showcasing its user-friendly functionalities 
